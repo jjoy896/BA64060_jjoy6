@@ -1,0 +1,22 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: "Jacob Joy"
+---
+#Practice assignment 1
+
+```{r}
+#Question 1
+b = 1947.01
+class(b)
+
+#Question 2
+b_char = as.character(b)
+class(b_char)
+
+#Question 3
+vector = c(1, 'a', 2, 'b')
+class(vector)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
