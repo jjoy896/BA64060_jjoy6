@@ -1,0 +1,5 @@
+"0","#Creation of a new table using select"
+"0","df = mobileChurnDF %>% select(DataUsage, Churn)"
+"0",""
+"0","#Description of the Data"
+"0","describe(df)"

@@ -1,0 +1,14 @@
+"0","#Importing Churn Data"
+"0",""
+"0","mobileChurnDF = read_csv(""C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 2\\churn.csv"")"
+"1","[1mRows: [22m[34m1000[39m [1mColumns: [22m[34m9[39m
+"
+"1","[36m──[39m [1mColumn specification[22m [36m───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (1): ContractType
+[32mdbl[39m (8): CallFailures, SubscriptionLength, DataUsage, VoiceMinutes, CustomerSupportCalls, MonthlyCharges, RoamingUsage, Churn
+"
+"1","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message.
+"

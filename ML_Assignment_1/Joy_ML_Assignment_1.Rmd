@@ -1,0 +1,117 @@
+---
+title: "ML_Assignment_1"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  word_document: default
+  pdf_document: default
+arthur: Jacob Joy
+---
+
+# Setup
+```{r}
+#Calling packages
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(modeest)
+library(psych)
+library(caret)
+```
+
+# Data Import
+```{r}
+#Importing Churn Data
+
+mobileChurnDF = read_csv("C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 2\\churn.csv")
+```
+
+# Question 1
+```{r}
+#Dimensions
+dim(mobileChurnDF)
+#First six rows by call failures
+mobileChurnDF %>% arrange(desc(CallFailures)) %>% head()
+#Last six rows by call failures
+mobileChurnDF %>% arrange(desc(CallFailures)) %>% tail()
+#Looking at the structure of the data
+str(mobileChurnDF)
+#Checking for missing values
+colMeans(is.na(mobileChurnDF))
+#Summary
+summary(mobileChurnDF)
+
+#Mode CallFailures
+mlv(mobileChurnDF$CallFailures, method = 'mfv')
+
+#Mode SubscriptionLength
+mlv(mobileChurnDF$SubscriptionLength, method = 'mfv')
+
+#Mode DataUsage No Mode
+head(mlv(mobileChurnDF$DataUsage, method = 'mfv'))
+#Mode VoiceMinutes No mode
+head(mlv(mobileChurnDF$VoiceMinutes, method = 'mfv'))
+#Mode CustomerSupportCalls
+mlv(mobileChurnDF$CustomerSupportCalls, method = 'mfv')
+#Mode MonthlyCharges No mode
+head(mlv(mobileChurnDF$MonthlyCharges, method = 'mfv'))
+#Mode RoamingUsage No mode
+head(mlv(mobileChurnDF$RoamingUsage, method = 'mfv'))
+#Mode Churn
+mlv(mobileChurnDF$Churn, method = 'mfv')
+
+#Mode or value repeated the most for character
+mlv(mobileChurnDF$ContractType, method = 'mfv')
+
+#Additional discriptions of data
+describe(mobileChurnDF)
+
+
+```
+
+# Question 2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The first descriptive statistic looked at was the dimension of the data set. It has 1000 rows and 9 variables, the number of variables corresponds with the description given to us. Next I looked at the head (top six) and tail (bottom six) rows of the data set after it had been sorted in descending order based on the number of call failures. Looking over these tables the Call failures seems to correlate with the Churn and would warrant additional investigation. Next, was the structure of the data which showed that all but one variable is numeric. The one character variable is Contract type. This categorical variable would need to be transformed later into a factor or as dummy variables if we are interested in using it in a regression model. Next, missing values were checked using colMeans and is.na, the result of this showed that there was no NA values in the data set.<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Looking at the summary table we have the mean, median, min, max, 1st and 3rd quartile. From the summary it shows that most variable means and medians are very close to each other, except for the Churn which has a mean of .504 which indicates that the number of customers that leave and the customers that stayed are just about 50/50 in this data set. Another observation is the large values for VoiceMinutes and the large range between min and max which may need to be investigated further. However, it is not uncommon for people to use not use their phone for calls and only text/data. The mode was determined for each variable which showed the most frequent value, an observation from the modes shows that DataUsage, VoiceMinutes, MonthlyCharges, and RoamingUsage do not have a mode because all values are unique. *Note: For clarity in the document I used head to show only the first six values instead of all 1000 for each no mode variable.*<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The last "mode" determined was for the categorical value which indicated that the most used type of contract is Monthly. The mode for Churn was 1 which idicates that more customers are leaving the mobile company then staying. Finally the description table was found for the data which provided additional information from summary, this information included standard deviation and skew. The VoiceMinutes has the largest standard deviation indicating data is spread out from the mean. All variables have minimal skew indicating normal distributions.<br>            
+
+# Question 3
+```{r}
+#Creation of a new table using select
+df = mobileChurnDF %>% select(DataUsage, Churn)
+
+#Description of the Data
+describe(df)
+
+#Frequency table showing how many of each data amount have remained a customer or left.
+table(round(df$DataUsage, digits = 0), df$Churn, dnn = c("Data", "Churn"))
+
+#Plot of Churn Vs DataUsage
+plot(df$DataUsage, df$Churn)
+
+#Correlation
+cor(df$DataUsage, df$Churn)
+
+```
+
+# Question 3 Insights
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There does not appear to be any correlation between Churn and Data Usage. Looking at the frequency table which has the data usage amount rounded to the nearest integer, it appears that a similar amount of customers stay or leave the mobile provider no matter what the level of data usage is. The plot of Churn Vs DataUsage shows the un-rounded amounts of data usage and there does not appear to be any relationship. Finally, I calculated the correlation which came out to 0.01 which indicates very small to no correlation between the two variables. 
+
+# Question 4
+```{r}
+#Z-score transformation
+
+mobileChurnDF$VoiceMinutes_Z = scale(mobileChurnDF$VoiceMinutes)
+summary(mobileChurnDF$VoiceMinutes_Z)
+
+ggplot(mobileChurnDF) + geom_point(aes(x = mobileChurnDF$VoiceMinutes, y = mobileChurnDF$DataUsage)) + ggtitle("Voice Minutes Vs Data Usage") + xlab("Voice Minutes") + ylab("Data Usage")
+
+ggplot(mobileChurnDF) + geom_point(aes(x = mobileChurnDF$VoiceMinutes_Z, y = mobileChurnDF$DataUsage)) + ggtitle("Voice Minutes Transformed Vs Data Usage") + xlab("Voice Minutes Z Normalized") + ylab("Data Usage")
+
+```
+
+# Question 4 Insights
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With out knowing what this data will be used for I decided to transform the VoiceMinutes Variable in order to decrease it's range. This happens by transforming the data to have a mean of 0 and a standard deviation of 1. Voice Minutes ranges from 1.91 Minutes to 4998.7 Minutes. This is a wide range as well as much larger numbers when compared to the rest of the variables. Changing the scale did not change the distribution of the data as can be seen in the two charts. The first is using the original VoiceMinutes while the second chart uses the transformed VoiceMinutes_Z. 
+

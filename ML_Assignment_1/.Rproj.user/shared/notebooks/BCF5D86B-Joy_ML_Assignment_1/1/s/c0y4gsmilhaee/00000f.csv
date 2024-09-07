@@ -1,0 +1,52 @@
+"0","#Calling packages"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(ggplot2)"
+"2","Warning:"
+"2"," package ‘ggplot2’ was built under R version 4.4.1
+"
+"0","library(readr)"
+"2","Warning:"
+"2"," package ‘readr’ was built under R version 4.4.1
+"
+"0","library(modeest)"
+"0","library(psych)"
+"2","Warning:"
+"2"," package ‘psych’ was built under R version 4.4.1
+"
+"2","Registered S3 method overwritten by 'psych':
+  method         from  
+  plot.residuals rmutil
+"
+"2","
+Attaching package: ‘psych’
+
+"
+"2","The following objects are masked from ‘package:ggplot2’:
+
+    %+%, alpha
+
+"
+"0","library(caret)"
+"2","Warning:"
+"2"," package ‘caret’ was built under R version 4.4.1
+"
+"2","Loading required package: lattice
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
