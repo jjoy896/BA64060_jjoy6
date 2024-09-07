@@ -6,6 +6,7 @@ author: "Jacob Joy"
 #Practice assignment 1
 
 ```{r}
+library(dplyr)
 #Question 1
 b = 1947.01
 class(b)
@@ -17,6 +18,27 @@ class(b_char)
 #Question 3
 vector = c(1, 'a', 2, 'b')
 class(vector)
+
+#Question 4
+df = data.frame(C1 = c(1,4.37), C2 = c("red", "Blue"), C3 = c(TRUE,FALSE))
+
+#Question 5
+print(df$C1)
+
+#Question 6
+df2 = data.frame(V1=1:6, Countries=c('US', 'UK','UK', 'India','China','India'))
+df2 %>% group_by(Countries) %>% count(Countries)
+```
+```{r}
+x = -1
+
+if(x >= 0) {
+y = 14
+} else {
+y = -19.7  
+}
+
+y
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.

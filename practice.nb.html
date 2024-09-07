@@ -1757,29 +1757,28 @@ display: none;
 <p>#Practice assignment 1</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1F1ZXN0aW9uIDFcbmIgPSAxOTQ3LjAxXG5jbGFzcyhiKVxuYGBgIn0= -->
-<pre class="r"><code>#Question 1
-b = 1947.01
-class(b)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY291bnQoZGYyJENvdW50cmllcylcblxuYGBgIn0= -->
+<pre class="r"><code>count(df2$Countries)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwibnVtZXJpY1wiXG4ifQ== -->
-<pre><code>[1] &quot;numeric&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY291bnQoZGYyJENvdW50cmllcykgOiBjb3VsZCBub3QgZmluZCBmdW5jdGlvbiBcImNvdW50XCJcbiJ9 -->
+<pre><code>Error in count(df2$Countries) : could not find function &quot;count&quot;</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1F1ZXN0aW9uIDJcbmJfY2hhciA9IGFzLmNoYXJhY3RlcihiKVxuY2xhc3MoYl9jaGFyKVxuYGBgIn0= -->
-<pre class="r"><code>#Question 2
-b_char = as.character(b)
-class(b_char)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueCA9IC0xXG5cbmlmKHggPj0gMCkge1xueSA9IDE0XG59IGVsc2Uge1xueSA9IC0xOS43ICBcbn1cblxueVxuYGBgIn0= -->
+<pre class="r"><code>x = -1
+
+if(x &gt;= 0) {
+y = 14
+} else {
+y = -19.7  
+}
+
+y</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiY2hhcmFjdGVyXCJcbiJ9 -->
-<pre><code>[1] &quot;character&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1F1ZXN0aW9uIDNcbnZlY3RvciA9IGMoMSwgJ2EnLCAyLCAnYicpXG5jbGFzcyh2ZWN0b3IpXG5gYGAifQ== -->
-<pre class="r"><code>#Question 3
-vector = c(1, &#39;a&#39;, 2, &#39;b&#39;)
-class(vector)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiY2hhcmFjdGVyXCJcbiJ9 -->
-<pre><code>[1] &quot;character&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIC0xOS43XG4ifQ== -->
+<pre><code>[1] -19.7</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1787,7 +1786,7 @@ class(vector)</code></pre>
 toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCmF1dGhvcjogIkphY29iIEpveSINCi0tLQ0KI1ByYWN0aWNlIGFzc2lnbm1lbnQgMQ0KDQpgYGB7cn0NCiNRdWVzdGlvbiAxDQpiID0gMTk0Ny4wMQ0KY2xhc3MoYikNCg0KI1F1ZXN0aW9uIDINCmJfY2hhciA9IGFzLmNoYXJhY3RlcihiKQ0KY2xhc3MoYl9jaGFyKQ0KDQojUXVlc3Rpb24gMw0KdmVjdG9yID0gYygxLCAnYScsIDIsICdiJykNCmNsYXNzKHZlY3RvcikNCmBgYA0KDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCmF1dGhvcjogIkphY29iIEpveSINCi0tLQ0KI1ByYWN0aWNlIGFzc2lnbm1lbnQgMQ0KDQpgYGB7cn0NCmxpYnJhcnkoZHBseXIpDQojUXVlc3Rpb24gMQ0KYiA9IDE5NDcuMDENCmNsYXNzKGIpDQoNCiNRdWVzdGlvbiAyDQpiX2NoYXIgPSBhcy5jaGFyYWN0ZXIoYikNCmNsYXNzKGJfY2hhcikNCg0KI1F1ZXN0aW9uIDMNCnZlY3RvciA9IGMoMSwgJ2EnLCAyLCAnYicpDQpjbGFzcyh2ZWN0b3IpDQoNCiNRdWVzdGlvbiA0DQpkZiA9IGRhdGEuZnJhbWUoQzEgPSBjKDEsNC4zNyksIEMyID0gYygicmVkIiwgIkJsdWUiKSwgQzMgPSBjKFRSVUUsRkFMU0UpKQ0KDQojUXVlc3Rpb24gNQ0KcHJpbnQoZGYkQzEpDQoNCiNRdWVzdGlvbiA2DQpkZjIgPSBkYXRhLmZyYW1lKFYxPTE6NiwgQ291bnRyaWVzPWMoJ1VTJywgJ1VLJywnVUsnLCAnSW5kaWEnLCdDaGluYScsJ0luZGlhJykpDQpkZjIgJT4lIGdyb3VwX2J5KENvdW50cmllcykgJT4lIGNvdW50KENvdW50cmllcykNCmBgYA0KYGBge3J9DQp4ID0gLTENCg0KaWYoeCA+PSAwKSB7DQp5ID0gMTQNCn0gZWxzZSB7DQp5ID0gLTE5LjcgIA0KfQ0KDQp5DQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0K</div>
 
 
 
