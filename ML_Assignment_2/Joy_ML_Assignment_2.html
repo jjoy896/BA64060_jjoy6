@@ -1645,32 +1645,45 @@ temp_index = createDataPartition(Carseats$Sales, p = 0.75, list = FALSE)
 #Creation of the Temp Data table which contains ~300 observations to later be split into two data sets
 Temp = Carseats[temp_index,]
 
-#Creation of the Test data set which has ~25% of all the data or ~100 observations 
+#Dimensions of Temp
+dim(Temp)</code></pre>
+<pre><code>## [1] 301  11</code></pre>
+<pre class="r"><code>#Creation of the Test data set which has ~25% of all the data or ~100 observations 
 Test = Carseats[-temp_index,]
 
-#Create Train_Index which will be used to select ~66% or ~200 observations to later create Train_Data 
+#Dimensions of Test
+dim(Test)</code></pre>
+<pre><code>## [1] 99 11</code></pre>
+<pre class="r"><code>#Create Train_Index which will be used to select ~66% or ~200 observations to later create Train_Data 
 Train_Index = createDataPartition(Temp$Sales, p = 0.66, list = FALSE)
 
 #Creation of Train_Data set which will have ~200 observations from the original data set
 Train_Data = Temp[Train_Index,]
 
-#Creation of Validation_Data set which will have ~100 observations form the original data set
-Validation_Data = Temp[-Train_Index,]</code></pre>
+#Dimensions of Train_Data
+dim(Train_Data)</code></pre>
+<pre><code>## [1] 201  11</code></pre>
+<pre class="r"><code>#Creation of Validation_Data set which will have ~100 observations form the original data set
+Validation_Data = Temp[-Train_Index,]
+
+#Dimensions of Validation_Data
+dim(Validation_Data)</code></pre>
+<pre><code>## [1] 100  11</code></pre>
 </div>
 <div id="compairing-summary-of-each-set-looking-at-sales" class="section level1">
 <h1>Compairing summary of each set looking at Sales</h1>
 <pre class="r"><code>#Summary of Train_Data Sales variable
 summary(Train_Data$Sales)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.000   5.400   7.440   7.495   9.240  13.910</code></pre>
+##   0.160   5.360   7.490   7.556   9.320  16.270</code></pre>
 <pre class="r"><code>#Summary of Validation_Data Sales variable
 summary(Validation_Data$Sales)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.370   5.503   7.505   7.564   9.328  16.270</code></pre>
+##   0.370   5.490   7.465   7.473   9.328  13.550</code></pre>
 <pre class="r"><code>#Summary of Test data Sales variable
 summary(Test$Sales)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.160   5.250   7.450   7.429   9.320  15.630</code></pre>
+##   0.000   5.365   7.490   7.399   9.150  13.360</code></pre>
 </div>
 <div id="validating-no-duplicated-rows-between-sets" class="section level1">
 <h1>Validating no duplicated rows between sets</h1>
