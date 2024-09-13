@@ -1,0 +1,15 @@
+"0","```r
+Train_Index=createDataPartition(Carseats$Sales,p=0.75, list=FALSE)
+Train_Data = Carseats[Train_Index,] # create the training data; we include all columns; note the index is row, column
+Test_Data = Carseats[-Train_Index,] # create the test set
+summary(Train_Data$Sales)
+```"
+"1","   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.160   5.400   7.490   7.501   9.320  16.270 
+"
+"0","```r
+summary(Test_Data$Sales)
+```"
+"1","   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   5.470   7.410   7.483   9.315  13.910 
+"

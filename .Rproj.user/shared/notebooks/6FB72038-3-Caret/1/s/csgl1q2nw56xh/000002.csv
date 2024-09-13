@@ -1,0 +1,29 @@
+"0","```r
+head(Carseats)
+```"
+"1","  Sales CompPrice Income Advertising Population Price ShelveLoc Age Education Urban  US
+1  9.50       138     73          11        276   120       Bad  42        17   Yes Yes
+2 11.22       111     48          16        260    83      Good  65        10   Yes Yes
+3 10.06       113     35          10        269    80    Medium  59        12   Yes Yes
+4  7.40       117    100           4        466    97    Medium  55        14   Yes Yes
+5  4.15       141     64           3        340   128       Bad  38        13   Yes  No
+6 10.81       124    113          13        501    72       Bad  78        16    No Yes
+"
+"0","```r
+summary(Carseats)
+```"
+"1","     Sales          CompPrice       Income        Advertising       Population        Price        ShelveLoc  
+ Min.   : 0.000   Min.   : 77   Min.   : 21.00   Min.   : 0.000   Min.   : 10.0   Min.   : 24.0   Bad   : 96  
+ 1st Qu.: 5.390   1st Qu.:115   1st Qu.: 42.75   1st Qu.: 0.000   1st Qu.:139.0   1st Qu.:100.0   Good  : 85  
+ Median : 7.490   Median :125   Median : 69.00   Median : 5.000   Median :272.0   Median :117.0   Medium:219  
+ Mean   : 7.496   Mean   :125   Mean   : 68.66   Mean   : 6.635   Mean   :264.8   Mean   :115.8               
+ 3rd Qu.: 9.320   3rd Qu.:135   3rd Qu.: 91.00   3rd Qu.:12.000   3rd Qu.:398.5   3rd Qu.:131.0               
+ Max.   :16.270   Max.   :175   Max.   :120.00   Max.   :29.000   Max.   :509.0   Max.   :191.0               
+      Age          Education    Urban       US     
+ Min.   :25.00   Min.   :10.0   No :118   No :142  
+ 1st Qu.:39.75   1st Qu.:12.0   Yes:282   Yes:258  
+ Median :54.50   Median :14.0                      
+ Mean   :53.32   Mean   :13.9                      
+ 3rd Qu.:66.00   3rd Qu.:16.0                      
+ Max.   :80.00   Max.   :18.0                      
+"

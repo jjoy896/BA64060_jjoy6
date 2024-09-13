@@ -1,0 +1,3 @@
+"0","#load ISLR which has the Carseats data set and the caret package"
+"0","library(ISLR)"
+"0","library(caret)"
