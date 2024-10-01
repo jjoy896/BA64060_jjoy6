@@ -1,4 +1,0 @@
-"0","```r
-# install.packages(\"ISLR\") # only install if needed
-library(ISLR)
-```"
