@@ -1,0 +1,16 @@
+"0","```r
+#Created a data frame that contains values of k from 1 - 15
+accuracyDF = data.frame(k = seq(1,15,1), overallAccuracy = rep(0,15))
+
+#Using a for loop try each value of k and add to the data frame the accuracy of correct predictions
+#We use the training and validation sets for this purpose so we can keep our test data unseen
+for(i in 1:15) {
+  
+  knn_pred = class::knn(train = trainDF_norm, test = validationDF_norm, cl = trainDF$STATUS, k = i)
+  
+  accuracyDF[i, 2] = confusionMatrix(knn_pred, as.factor(validationDF$STATUS), positive = \"1\")$overall[1]
+  
+}
+# display the value of k and the overall accuracy
+accuracyDF[which(accuracyDF[,2] == max(accuracyDF[,2])),]
+```"

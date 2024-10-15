@@ -1,0 +1,117 @@
+---
+title: "ML_Assignment_4"
+author: "Jacob Joy"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+# Setup
+```{r}
+#library(naivebayes)
+#library(caret)
+#library(pivottabler)
+#library(gmodels)
+#heart_Data = read.csv("C:\\Users\\juanm\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 5\\Assignment 4\\heart_disease.csv")
+set.seed(123)
+#Creating Dummy variable for Target Yes if MAX HeartRate greater than 170 else NO
+for(i in 1:length(heart_Data)){
+  heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
+}
+
+#Creating Dummy variable for BP_New if Blood_Pressure is greater than 120 else NO
+for(i in 1:length(heart_Data)){
+  heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
+}
+```
+
+# Question 1
+```{r}
+#Created a table to compare the target for heart disease with if they had chest pain
+Target_table = table(heart_Data$Target, heart_Data$chest_pain_type, dnn = c("Heart Disease", "Chest Pain"))
+
+#Created the table to display probabilities instead of just frequency count
+prop.table(Target_table)
+```
+# Question 1 Explanation
+
+#Needs Explained
+
+# Question 2 Code
+```{r}
+heart_data30 = heart_Data[1:30, c("Target", "BP_New", "chest_pain_type")]
+
+pivot1 = ftable(heart_data30)
+table2 = table(heart_data30$BP_New, heart_data30$chest_pain_type)
+
+#P_NO = nrow(subset(heart_data30, Target == "NO")) / nrow(heart_data30)
+#P_YES_0 = nrow(subset(heart_data30, BP_New == "YES" & chest_pain_type == 0)) / nrow(heart_data30)
+P_YES_YES_1 = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
+P_YES_NO_0 = nrow(subset(heart_data30, Target == "YES" & BP_New == "NO" & chest_pain_type == 0)) / nrow(heart_data30)
+P_YES_NO_1 = nrow(subset(heart_data30, Target == "YES" & BP_New == "NO" & chest_pain_type == 1)) / nrow(heart_data30)
+P_YES_YES_0 = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES" & chest_pain_type == 0)) / nrow(heart_data30)
+P_YES_1 = nrow(subset(heart_data30, BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
+P_NO_0 = nrow(subset(heart_data30, BP_New == "NO" & chest_pain_type == 0)) / nrow(heart_data30)
+P_NO_1 = nrow(subset(heart_data30, BP_New == "NO" & chest_pain_type == 1)) / nrow(heart_data30)
+P_YES_0 = nrow(subset(heart_data30, BP_New == "YES" & chest_pain_type == 0)) / nrow(heart_data30)
+
+P1 = P_YES_YES_0 / P_YES_0
+P2 = P_YES_YES_1 / P_YES_1
+P3 = P_YES_NO_0 / P_NO_0
+P4 = P_YES_NO_1 / P_NO_1
+```
+# Question 2 B "Classification of Accidents"
+```{r}
+Probability_Target = rep(0,30)
+for (i in 1:30){
+  if (heart_data30$BP_New[i] == "YES" & heart_data30$chest_pain_type[i] == 1){
+    Probability_Target[i] = P2
+    } else if (heart_data30$BP_New[i] == "NO" & heart_data30$chest_pain_type[i] == 1){
+      Probability_Target[i] = P4
+    } else {
+      Probability_Target[i] = 0
+    }
+}
+
+heart_data30$Probability_Target = Probability_Target 
+heart_data30$Pred_Probability = ifelse(heart_data30$Probability_Target > 0.5, "Yes", "No")
+```
+# Question 2 C
+```{r}
+P_YES = nrow(subset(heart_data30, Target == "YES")) / nrow(heart_data30)
+P_NO = nrow(subset(heart_data30, Target == "NO")) / nrow(heart_data30)
+naive = (P_YES_YES_1 * P_YES) / P_YES_1
+naive
+P_NO_YES_1 = nrow(subset(heart_data30, Target == "NO" & BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
+naive2 = (P_NO_YES_1 * P_NO) / P_YES_1
+```
+# Question 3 Code
+```{r}
+#Partitioned the data 
+train_index = createDataPartition(heart_Data$Target, p = 0.6, list = FALSE)
+
+#Training
+trainDF = heart_Data[train_index,]
+
+#Validation
+validationDF = heart_Data[-train_index,]
+
+#trainDFnorm = trainDF[-10]
+
+nb_model = naive_bayes(Target ~ BP_New + chest_pain_type, data = trainDF)
+train_pred = predict(nb_model, validationDF)
+validationDF$Target = as.factor(validationDF$Target)
+conf_matrix1 = confusionMatrix(train_pred, validationDF$Target)
+conf_matrix1
+
+CrossTable(x=validationDF$Target, y=train_pred, prop.chisq = FALSE) 
+```
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

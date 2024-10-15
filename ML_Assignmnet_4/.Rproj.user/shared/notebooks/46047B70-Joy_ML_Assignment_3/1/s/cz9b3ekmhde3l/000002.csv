@@ -1,0 +1,11 @@
+"0","```r
+#created normalized values using z-score normalization, removing STATUS from the data first.
+norm_values = preProcess(trainDF[,-6], method= c(\"center\",\"scale\"))
+
+#Based on the normalized values from the training set testing, validation, and training normalized data frames are created.
+#Making sure STATUS is removed from each before creation.
+testDF_norm = predict(norm_values, testDF[,-6])
+validationDF_norm = predict(norm_values, validationDF[,-6])
+trainDF_norm = predict(norm_values, trainDF[,-6])
+
+```"

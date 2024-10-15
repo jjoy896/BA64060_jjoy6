@@ -1,0 +1,22 @@
+"0","```r
+#Partitioned the data in half and stratified based on the target variable
+train_index = createDataPartition(Vehicles_data$STATUS, p = 0.5, list = FALSE)
+
+#Half of the data will be used for training
+trainDF = Vehicles_data[train_index,]
+
+#The other half will be further partitioned into validation and testing
+tempdf = Vehicles_data[-train_index,]
+
+#Partitioned the remaining data into validation index of 30% stratified based on the target variable to stay consistent
+validation_index = createDataPartition(tempdf$STATUS, p = 0.3, list = FALSE)
+
+#Created the validation data frame
+validationDF = tempdf[validation_index,]
+
+#Created the testDF using the left over data
+testDF = tempdf[-validation_index,]
+
+#Removed the temp data frame 
+rm(tempdf)
+```"

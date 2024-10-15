@@ -1,0 +1,31 @@
+"0","```r
+#A new data frame containing one observation is created to see if our model can classify it correctly
+new_vehicle = data.frame(
+  ORDERNUMBER = 10322,
+  QUANTITYORDERED=50, 
+  PRICEEACH=100, 
+  ORDERLINENUMBER=6, 
+  SALES=12536.5, 
+  QTR_ID=4, 
+  MONTH_ID=11, 
+  MSRP=127, 
+  DEALSIZE.Large=1, 
+  DEALSIZE.Small=0, 
+  DEALSIZE.Medium=0
+)
+
+#A new variable is created so we are not manipulating the original
+new_vehicle_norm = new_vehicle
+
+#normalizing or new vehicle that we want to classify
+new_vehicle_norm = predict(norm_values, new_vehicle_norm)
+
+#Predicting the nearest neighbor
+knn_pred_k_1 = class::knn(train = trainDF_norm, test = new_vehicle_norm, cl = trainDF$STATUS, k = 1)
+
+#The Nearest Neighbor
+knn_pred_k_1
+```"
+"1","[1] 1
+Levels: 0 1
+"

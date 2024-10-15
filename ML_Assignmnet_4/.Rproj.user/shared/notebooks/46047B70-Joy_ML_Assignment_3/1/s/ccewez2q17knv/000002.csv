@@ -1,0 +1,19 @@
+"0","```r
+#Set seed to have consistent numbers while testing
+set.seed(123)
+
+#imported Vehicles_Sales.csv in to a data frame named Vehicles_data
+Vehicles_data = read.csv(\"C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 4\\Assignment 3\\Vehicles_Sales.csv\")
+
+#Dropped YEAR_ID and PRODUCTLINE from the Vehicles_data frame
+Vehicles_data = Vehicles_data[,-c(9,10)]
+
+#Converted DEALSIZE to a factor
+Vehicles_data$DEALSIZE = as.factor(Vehicles_data$DEALSIZE)
+
+#Created dummyVars for the data
+groups = dummyVars(~., data = Vehicles_data)
+
+#applied the dummyvars to the data for use
+Vehicles_data = as.data.frame(predict(groups, Vehicles_data))
+```"
