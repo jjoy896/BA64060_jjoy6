@@ -16,22 +16,25 @@ library(pivottabler)
 library(gmodels)
 
 #Import Data
-heart_Data = read.csv("C:\\Heart_disease.csv")
+#heart_Data = read.csv("C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 5\\Assignment 4\\heart_disease.csv")
+
+#Import Data Laptop
+heart_Data = read.csv("C:\\heart_disease.csv")
 
 #Set Seed for consistency
 set.seed(123)
-
+heart_Data$Target = ifelse(heart_Data$MAX_HeartRate > 170, "YES", "NO")
 #Creating Dummy variable for Target Yes if MAX HeartRate 
 #greater than 170 else NO
-for(i in 1:length(heart_Data)){
-  heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
-}
+#for(i in 1:nrow(heart_Data)){
+#  heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
+#}
 
 #Creating Dummy variable for BP_New if Blood_Pressure is greater 
 #than 120 else NO
-for(i in 1:length(heart_Data)){
-  heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
-}
+#for(i in 1:nrow(heart_Data)){
+#  heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
+#}
 ```
 # Setup Information
 I preformed the above setup, which included created dummy variables for two numerical variables for use in the Naive Bayes Classifier because continuous numeric variables do not work well with this model. 
@@ -40,11 +43,15 @@ I preformed the above setup, which included created dummy variables for two nume
 ```{r}
 #Created a table to compare the target for heart disease with if they had 
 #chest pain
-Target_table = table(heart_Data$Target, heart_Data$chest_pain_type, 
-                     dnn = c("Heart Disease", "Chest Pain"))
+#Target_table = table(heart_Data$Target, heart_Data$chest_pain_type, 
+                   #  dnn = c("Heart Disease", "Chest Pain"))
 
+Target_table <- table(heart_Data$Target) 
+Target_table
+Probability_No <- Target_table["NO"] / sum(Target_table)
+Probability_No
 #Created the table to display probabilities instead of just frequency count
-prop.table(Target_table)
+#prop.table(Target_table)
 ```
 # Question 1 Explanation
 Based on only the information on the table created if a person presented with Chest Pain the most likely outcome would be that they do not have Heart Disease. However, because chest pain can be life threatening a doctor would still want to verify on more then the symptom of Chest Pain.
@@ -87,18 +94,31 @@ P_YES_0 = nrow(subset(heart_data30, BP_New == "YES" &
 #Creation of the variables that have the conditional probabilities 
 #with the outcome being yes for target.
 
-P1 = P_YES_YES_0 / P_YES_0
-P2 = P_YES_YES_1 / P_YES_1
-P3 = P_YES_NO_0 / P_NO_0
-P4 = P_YES_NO_1 / P_NO_1
+P11 = P_YES_YES_0 / P_YES_0
+P22 = P_YES_YES_1 / P_YES_1
+P33 = P_YES_NO_0 / P_NO_0
+P44 = P_YES_NO_1 / P_NO_1
 
-print(paste("The conditional probability of having heart disease with high BP and No chest Pain", P1))
+print(paste("The conditional probability of having heart disease with high BP and No chest Pain", P11))
 
-print(paste("The conditional probability of having heart disease with high BP and chest Pain", P2))
+print(paste("The conditional probability of having heart disease with high BP and chest Pain", P22))
 
-print(paste("The conditional probability of having heart disease withregular BP and No chest Pain", P3))
+print(paste("The conditional probability of having heart disease withregular BP and No chest Pain", P33))
 
-print(paste("The conditional probability of having heart disease with high BP and chest Pain", P4))
+print(paste("The conditional probability of having heart disease with high BP and chest Pain", P44))
+
+
+Object1 <- ftable(heart_data30)  
+Object2 <- ftable(heart_data30[,-1])
+P1 = Object1[4,1] / Object2[2,1]
+P2 = Object1[4,2] / Object2[2,2]
+P3 = Object1[3,1] / Object2[1,1]
+P4 = Object1[3,2] / Object2[1,2]
+
+P1
+P2
+P3
+P4
 ```
 # Question 2 A Explination
 In question 2 A I created a new dataframe of only the first 30 observations and then created a pivot table based on this information. Next, I created the probabilities for each outcome of variables but only if the Target variable was Yes. Using the created probabilities I used the formula for conditional probability to find the 4 different variations that could occur. Based on just these probabilities the "only" indication of heart disease is having chest pain.
@@ -143,13 +163,27 @@ After completing Step B and creating a table to see the results from our target 
 #Created the probability of having heart disease
 P_YES = nrow(subset(heart_data30, Target == "YES")) / nrow(heart_data30)
 
+P2_YES =nrow(subset(heart_data30, Target == "YES")) / nrow(heart_data30)
+P2_YES_YES_1 = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
+P2_YES_1 = nrow(subset(heart_data30, BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
 #Using the case of a observation having high BP and Chest Pain, 
 #I used Bayes theorem to find the probability
-naive = (P_YES_YES_1 * P_YES) / P_YES_1
+naive = (P2_YES_YES_1 * P2_YES) / P2_YES_1
 naive
+
+P_BPY_TY = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES")) / nrow(subset(heart_data30, Target == "YES"))
+P_CP1_TY = nrow(subset(heart_data30, Target == "YES" & chest_pain_type == 1)) / nrow(subset(heart_data30, Target == "YES"))
+
+Naive2 = (P_BPY_TY * P_CP1_TY * P_YES)/ P2_YES_1
+Naive2
 ```
 # Question 2 C Explination
 The probability found using Bayes Theorem of a person having heart disease who has high BP and Chest pain is 1.67% This makes sense based on the data we have and problems conducted before this. The chances of heart disease is low over all and when looking at only 2 specific events  we see that this is even lower. This also conforms to the naive case where in a non emergency event patients health data could be looked at quickly to determine the likely hood of heart disease.
+
+# Question 2 C Redo
+```{r}
+
+```
 
 # Question 3 Code
 ```{r}

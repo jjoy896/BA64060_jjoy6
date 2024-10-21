@@ -16,22 +16,25 @@ library(pivottabler)
 library(gmodels)
 
 #Import Data
-heart_Data = read.csv("C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 5\\Assignment 4\\heart_disease.csv")
+#heart_Data = read.csv("C:\\Users\\Urza\\OneDrive\\BA 64060 Fundementals of Machine Learning\\Module 5\\Assignment 4\\heart_disease.csv")
+
+#Import Data Laptop
+heart_Data = read.csv("C:\\heart_disease.csv")
 
 #Set Seed for consistency
 set.seed(123)
-
+heart_Data$Target = ifelse(heart_Data$MAX_HeartRate > 170, "YES", "NO")
 #Creating Dummy variable for Target Yes if MAX HeartRate 
 #greater than 170 else NO
-for(i in 1:nrow(heart_Data)){
-  heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
-}
+#for(i in 1:nrow(heart_Data)){
+#  heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
+#}
 
 #Creating Dummy variable for BP_New if Blood_Pressure is greater 
 #than 120 else NO
-for(i in 1:nrow(heart_Data)){
-  heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
-}
+#for(i in 1:nrow(heart_Data)){
+#  heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
+#}
 ```
 # Setup Information
 I preformed the above setup, which included created dummy variables for two numerical variables for use in the Naive Bayes Classifier because continuous numeric variables do not work well with this model. 
