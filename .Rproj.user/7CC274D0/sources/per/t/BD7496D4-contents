@@ -23,13 +23,13 @@ set.seed(123)
 
 #Creating Dummy variable for Target Yes if MAX HeartRate 
 #greater than 170 else NO
-for(i in 1:length(heart_Data)){
+for(i in 1:nrow(heart_Data)){
   heart_Data$Target[i] = ifelse(heart_Data$MAX_HeartRate[i] > 170, "YES", "NO")
 }
 
 #Creating Dummy variable for BP_New if Blood_Pressure is greater 
 #than 120 else NO
-for(i in 1:length(heart_Data)){
+for(i in 1:nrow(heart_Data)){
   heart_Data$BP_New[i] = ifelse(heart_Data$Blood_Pressure[i] > 120, "YES", "NO")
 }
 ```
@@ -160,13 +160,19 @@ After completing Step B and creating a table to see the results from our target 
 #Created the probability of having heart disease
 P_YES = nrow(subset(heart_data30, Target == "YES")) / nrow(heart_data30)
 
-P2_YES =nrow(subset(heart_Data, Target == "YES")) / nrow(heart_Data)
-P2_YES_YES_1 = nrow(subset(heart_Data, Target == "YES" & BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_Data)
-P2_YES_1 = nrow(subset(heart_Data, BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_Data)
+P2_YES =nrow(subset(heart_data30, Target == "YES")) / nrow(heart_data30)
+P2_YES_YES_1 = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
+P2_YES_1 = nrow(subset(heart_data30, BP_New == "YES" & chest_pain_type == 1)) / nrow(heart_data30)
 #Using the case of a observation having high BP and Chest Pain, 
 #I used Bayes theorem to find the probability
 naive = (P2_YES_YES_1 * P2_YES) / P2_YES_1
 naive
+
+P_BPY_TY = nrow(subset(heart_data30, Target == "YES" & BP_New == "YES")) / nrow(subset(heart_data30, Target == "YES"))
+P_CP1_TY = nrow(subset(heart_data30, Target == "YES" & chest_pain_type == 1)) / nrow(subset(heart_data30, Target == "YES"))
+
+Naive2 = (P_BPY_TY * P_CP1_TY * P_YES)/ P2_YES_1
+Naive2
 ```
 # Question 2 C Explination
 The probability found using Bayes Theorem of a person having heart disease who has high BP and Chest pain is 1.67% This makes sense based on the data we have and problems conducted before this. The chances of heart disease is low over all and when looking at only 2 specific events  we see that this is even lower. This also conforms to the naive case where in a non emergency event patients health data could be looked at quickly to determine the likely hood of heart disease.
