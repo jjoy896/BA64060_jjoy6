@@ -1,0 +1,34 @@
+---
+title: "ML_Assignment 5"
+author: "Jacob Joy"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+# Q1-A Explain how normalization and the number of clusters (k) can affect the clustering outcome?
+When performing clustering the normalization of data as well as the number of clusters *k* is important in producing acurate outcomes. Clustering depends on the use of a distance metric, because of this id our data has different scales one variable could over take the others causing our model to not utilize all the relevant information. The normalization of data also helps to reduce the impact of outliers by reducing the scale of all the values to a normalized value.
+The number of clusters produced will also effect the outcome, accuracy, and meaningfulness of the clusters. If a small value of clusters *k* is used there may not be enough groups to sort the observations in a proper way. On the other hand if to high of a value of *k* is used there may be to many clusters to give any meaning fulling interpretations. 
+
+
+# Q1-B Code
+```{r}
+
+```
+
+# Q1-B Explinations
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
