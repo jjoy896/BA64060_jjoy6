@@ -1762,8 +1762,26 @@ the chunk or by placing your cursor inside it and pressing
 <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChjYXJzKVxuYGBgIn0= -->
-<pre class="r"><code>plot(cars)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShmYWN0b2V4dHJhKVxubGlicmFyeShkcGx5cilcbmBgYCJ9 -->
+<pre class="r"><code>library(factoextra)
+library(dplyr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhkcGx5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuNC4xXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhkcGx5cuKAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6c3RhdHPigJk6XG5cbiAgICBmaWx0ZXIsIGxhZ1xuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6YmFzZeKAmTpcblxuICAgIGludGVyc2VjdCwgc2V0ZGlmZiwgc2V0ZXF1YWwsIHVuaW9uXG4ifQ== -->
+<pre><code>Warning: package ‘dplyr’ was built under R version 4.4.1
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2xhcHRvcCBEYXRhIEltcG9ydFxud2luZXMgPSByZWFkLmNzdihcIkM6XFxcXHdpbmUtY2x1c3RlcmluZy5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>#laptop Data Import
+wines = read.csv(&quot;C:\\wine-clustering.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1772,22 +1790,60 @@ the chunk or by placing your cursor inside it and pressing
 affect the clustering outcome?</h1>
 <p>When performing clustering the normalization of data as well as the
 number of clusters <em>k</em> is important in producing acurate
-outcomes. Clustering depends on the use of a distance metric, because of
-this id our data has different scales one variable could over take the
-others causing our model to not utilize all the relevant information.
-The normalization of data also helps to reduce the impact of outliers by
-reducing the scale of all the values to a normalized value. The number
-of clusters produced will also effect the outcome, accuracy, and
-meaningfulness of the clusters. If a small value of clusters <em>k</em>
-is used there may not be enough groups to sort the observations in a
-proper way. On the other hand if to high of a value of <em>k</em> is
-used there may be to many clusters to give any meaning fulling
-interpretations.</p>
+outcomes. Clustering depends on the use of a distance metric commonly
+the euclidean distance, because of this if our data has different scales
+one variable could over take the others causing our model to not utilize
+all the relevant information. This leads to clusters that may not
+represent actual clusters and will only create clusters based on the
+highest scaled variable. The number of clusters selected will also
+effect the outcome, accuracy, and meaningfulness of the results. If a
+small value of clusters <em>k</em> is used there may not be enough
+groups to sort the observations in a proper way, this can lead to lose
+of important patterns and clusters that should be separate will can end
+up being merged to fit the value of <em>k</em>. On the other hand if to
+high of a value of <em>k</em> is used there may be too many clusters to
+give any meaning fulling interpretations. A large number for <em>k</em>
+may also result in clusters that should not be split up being broken up
+into multiple clusters to satisfy our value for <em>k</em>. One final
+issue with a large value of <em>k</em> could mean clusters may be formed
+with too few observations making them not as meaningful.</p>
 </div>
 <div id="q1-b-code" class="section level1">
 <h1>Q1-B Code</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NoZWNrIHRoZSBzdHJ1Y3R1cmUgb2YgdGhlIGRhdGFcbnN0cih3aW5lcylcbmBgYCJ9 -->
+<pre class="r"><code>#Check the structure of the data
+str(wines)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0MTc4IG9icy4gb2YgIDEzIHZhcmlhYmxlczpcbiAkIEFsY29ob2wgICAgICAgICAgICAgOiBudW0gIDE0LjIgMTMuMiAxMy4yIDE0LjQgMTMuMiAuLi5cbiAkIE1hbGljX0FjaWQgICAgICAgICAgOiBudW0gIDEuNzEgMS43OCAyLjM2IDEuOTUgMi41OSAxLjc2IDEuODcgMi4xNSAxLjY0IDEuMzUgLi4uXG4gJCBBc2ggICAgICAgICAgICAgICAgIDogbnVtICAyLjQzIDIuMTQgMi42NyAyLjUgMi44NyAyLjQ1IDIuNDUgMi42MSAyLjE3IDIuMjcgLi4uXG4gJCBBc2hfQWxjYW5pdHkgICAgICAgIDogbnVtICAxNS42IDExLjIgMTguNiAxNi44IDIxIDE1LjIgMTQuNiAxNy42IDE0IDE2IC4uLlxuICQgTWFnbmVzaXVtICAgICAgICAgICA6IGludCAgMTI3IDEwMCAxMDEgMTEzIDExOCAxMTIgOTYgMTIxIDk3IDk4IC4uLlxuICQgVG90YWxfUGhlbm9scyAgICAgICA6IG51bSAgMi44IDIuNjUgMi44IDMuODUgMi44IDMuMjcgMi41IDIuNiAyLjggMi45OCAuLi5cbiAkIEZsYXZhbm9pZHMgICAgICAgICAgOiBudW0gIDMuMDYgMi43NiAzLjI0IDMuNDkgMi42OSAzLjM5IDIuNTIgMi41MSAyLjk4IDMuMTUgLi4uXG4gJCBOb25mbGF2YW5vaWRfUGhlbm9sczogbnVtICAwLjI4IDAuMjYgMC4zIDAuMjQgMC4zOSAwLjM0IDAuMyAwLjMxIDAuMjkgMC4yMiAuLi5cbiAkIFByb2FudGhvY3lhbmlucyAgICAgOiBudW0gIDIuMjkgMS4yOCAyLjgxIDIuMTggMS44MiAxLjk3IDEuOTggMS4yNSAxLjk4IDEuODUgLi4uXG4gJCBDb2xvcl9JbnRlbnNpdHkgICAgIDogbnVtICA1LjY0IDQuMzggNS42OCA3LjggNC4zMiA2Ljc1IDUuMjUgNS4wNSA1LjIgNy4yMiAuLi5cbiAkIEh1ZSAgICAgICAgICAgICAgICAgOiBudW0gIDEuMDQgMS4wNSAxLjAzIDAuODYgMS4wNCAxLjA1IDEuMDIgMS4wNiAxLjA4IDEuMDEgLi4uXG4gJCBPRDI4MCAgICAgICAgICAgICAgIDogbnVtICAzLjkyIDMuNCAzLjE3IDMuNDUgMi45MyAyLjg1IDMuNTggMy41OCAyLjg1IDMuNTUgLi4uXG4gJCBQcm9saW5lICAgICAgICAgICAgIDogaW50ICAxMDY1IDEwNTAgMTE4NSAxNDgwIDczNSAxNDUwIDEyOTAgMTI5NSAxMDQ1IDEwNDUgLi4uXG4ifQ== -->
+<pre><code>&#39;data.frame&#39;:   178 obs. of  13 variables:
+ $ Alcohol             : num  14.2 13.2 13.2 14.4 13.2 ...
+ $ Malic_Acid          : num  1.71 1.78 2.36 1.95 2.59 1.76 1.87 2.15 1.64 1.35 ...
+ $ Ash                 : num  2.43 2.14 2.67 2.5 2.87 2.45 2.45 2.61 2.17 2.27 ...
+ $ Ash_Alcanity        : num  15.6 11.2 18.6 16.8 21 15.2 14.6 17.6 14 16 ...
+ $ Magnesium           : int  127 100 101 113 118 112 96 121 97 98 ...
+ $ Total_Phenols       : num  2.8 2.65 2.8 3.85 2.8 3.27 2.5 2.6 2.8 2.98 ...
+ $ Flavanoids          : num  3.06 2.76 3.24 3.49 2.69 3.39 2.52 2.51 2.98 3.15 ...
+ $ Nonflavanoid_Phenols: num  0.28 0.26 0.3 0.24 0.39 0.34 0.3 0.31 0.29 0.22 ...
+ $ Proanthocyanins     : num  2.29 1.28 2.81 2.18 1.82 1.97 1.98 1.25 1.98 1.85 ...
+ $ Color_Intensity     : num  5.64 4.38 5.68 7.8 4.32 6.75 5.25 5.05 5.2 7.22 ...
+ $ Hue                 : num  1.04 1.05 1.03 0.86 1.04 1.05 1.02 1.06 1.08 1.01 ...
+ $ OD280               : num  3.92 3.4 3.17 3.45 2.93 2.85 3.58 3.58 2.85 3.55 ...
+ $ Proline             : int  1065 1050 1185 1480 735 1450 1290 1295 1045 1045 ...</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NoZWNrIGZvciBtaXNzaW5nIHZhbHVlc1xuY29sTWVhbnMoaXMubmEod2luZXMpKVxuYGBgIn0= -->
+<pre class="r"><code>#Check for missing values
+colMeans(is.na(wines))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgIEFsY29ob2wgICAgICAgICAgIE1hbGljX0FjaWQgICAgICAgICAgICAgICAgICBBc2ggICAgICAgICBBc2hfQWxjYW5pdHkgICAgICAgICAgICBNYWduZXNpdW0gXG4gICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgICAgMCBcbiAgICAgICBUb3RhbF9QaGVub2xzICAgICAgICAgICBGbGF2YW5vaWRzIE5vbmZsYXZhbm9pZF9QaGVub2xzICAgICAgUHJvYW50aG9jeWFuaW5zICAgICAgQ29sb3JfSW50ZW5zaXR5IFxuICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDAgXG4gICAgICAgICAgICAgICAgIEh1ZSAgICAgICAgICAgICAgICBPRDI4MCAgICAgICAgICAgICAgUHJvbGluZSBcbiAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgICAwIFxuIn0= -->
+<pre><code>             Alcohol           Malic_Acid                  Ash         Ash_Alcanity            Magnesium 
+                   0                    0                    0                    0                    0 
+       Total_Phenols           Flavanoids Nonflavanoid_Phenols      Proanthocyanins      Color_Intensity 
+                   0                    0                    0                    0                    0 
+                 Hue                OD280              Proline 
+                   0                    0                    0 </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1805,7 +1861,7 @@ run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1MX0Fzc2lnbm1lbnQgNSINCmF1dGhvcjogIkphY29iIEpveSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KDQpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIA0KDQpgYGB7cn0NCnBsb3QoY2FycykNCmBgYA0KDQojIFExLUEgRXhwbGFpbiBob3cgbm9ybWFsaXphdGlvbiBhbmQgdGhlIG51bWJlciBvZiBjbHVzdGVycyAoaykgY2FuIGFmZmVjdCB0aGUgY2x1c3RlcmluZyBvdXRjb21lPw0KV2hlbiBwZXJmb3JtaW5nIGNsdXN0ZXJpbmcgdGhlIG5vcm1hbGl6YXRpb24gb2YgZGF0YSBhcyB3ZWxsIGFzIHRoZSBudW1iZXIgb2YgY2x1c3RlcnMgKmsqIGlzIGltcG9ydGFudCBpbiBwcm9kdWNpbmcgYWN1cmF0ZSBvdXRjb21lcy4gQ2x1c3RlcmluZyBkZXBlbmRzIG9uIHRoZSB1c2Ugb2YgYSBkaXN0YW5jZSBtZXRyaWMsIGJlY2F1c2Ugb2YgdGhpcyBpZCBvdXIgZGF0YSBoYXMgZGlmZmVyZW50IHNjYWxlcyBvbmUgdmFyaWFibGUgY291bGQgb3ZlciB0YWtlIHRoZSBvdGhlcnMgY2F1c2luZyBvdXIgbW9kZWwgdG8gbm90IHV0aWxpemUgYWxsIHRoZSByZWxldmFudCBpbmZvcm1hdGlvbi4gVGhlIG5vcm1hbGl6YXRpb24gb2YgZGF0YSBhbHNvIGhlbHBzIHRvIHJlZHVjZSB0aGUgaW1wYWN0IG9mIG91dGxpZXJzIGJ5IHJlZHVjaW5nIHRoZSBzY2FsZSBvZiBhbGwgdGhlIHZhbHVlcyB0byBhIG5vcm1hbGl6ZWQgdmFsdWUuDQpUaGUgbnVtYmVyIG9mIGNsdXN0ZXJzIHByb2R1Y2VkIHdpbGwgYWxzbyBlZmZlY3QgdGhlIG91dGNvbWUsIGFjY3VyYWN5LCBhbmQgbWVhbmluZ2Z1bG5lc3Mgb2YgdGhlIGNsdXN0ZXJzLiBJZiBhIHNtYWxsIHZhbHVlIG9mIGNsdXN0ZXJzICprKiBpcyB1c2VkIHRoZXJlIG1heSBub3QgYmUgZW5vdWdoIGdyb3VwcyB0byBzb3J0IHRoZSBvYnNlcnZhdGlvbnMgaW4gYSBwcm9wZXIgd2F5LiBPbiB0aGUgb3RoZXIgaGFuZCBpZiB0byBoaWdoIG9mIGEgdmFsdWUgb2YgKmsqIGlzIHVzZWQgdGhlcmUgbWF5IGJlIHRvIG1hbnkgY2x1c3RlcnMgdG8gZ2l2ZSBhbnkgbWVhbmluZyBmdWxsaW5nIGludGVycHJldGF0aW9ucy4gDQoNCg0KIyBRMS1CIENvZGUNCmBgYHtyfQ0KDQpgYGANCg0KIyBRMS1CIEV4cGxpbmF0aW9ucw0KDQoNCg0KDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLg0KDQpUaGUgcHJldmlldyBzaG93cyB5b3UgYSByZW5kZXJlZCBIVE1MIGNvcHkgb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBlZGl0b3IuIENvbnNlcXVlbnRseSwgdW5saWtlICpLbml0KiwgKlByZXZpZXcqIGRvZXMgbm90IHJ1biBhbnkgUiBjb2RlIGNodW5rcy4gSW5zdGVhZCwgdGhlIG91dHB1dCBvZiB0aGUgY2h1bmsgd2hlbiBpdCB3YXMgbGFzdCBydW4gaW4gdGhlIGVkaXRvciBpcyBkaXNwbGF5ZWQuDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1MX0Fzc2lnbm1lbnQgNSINCmF1dGhvcjogIkphY29iIEpveSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KDQpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIA0KDQpgYGB7cn0NCmxpYnJhcnkoZmFjdG9leHRyYSkNCmxpYnJhcnkoZHBseXIpDQojbGFwdG9wIERhdGEgSW1wb3J0DQp3aW5lcyA9IHJlYWQuY3N2KCJDOlxcd2luZS1jbHVzdGVyaW5nLmNzdiIpDQpgYGANCg0KIyBRMS1BIEV4cGxhaW4gaG93IG5vcm1hbGl6YXRpb24gYW5kIHRoZSBudW1iZXIgb2YgY2x1c3RlcnMgKGspIGNhbiBhZmZlY3QgdGhlIGNsdXN0ZXJpbmcgb3V0Y29tZT8NCldoZW4gcGVyZm9ybWluZyBjbHVzdGVyaW5nIHRoZSBub3JtYWxpemF0aW9uIG9mIGRhdGEgYXMgd2VsbCBhcyB0aGUgbnVtYmVyIG9mIGNsdXN0ZXJzICprKiBpcyBpbXBvcnRhbnQgaW4gcHJvZHVjaW5nIGFjdXJhdGUgb3V0Y29tZXMuIENsdXN0ZXJpbmcgZGVwZW5kcyBvbiB0aGUgdXNlIG9mIGEgZGlzdGFuY2UgbWV0cmljIGNvbW1vbmx5IHRoZSBldWNsaWRlYW4gZGlzdGFuY2UsIGJlY2F1c2Ugb2YgdGhpcyBpZiBvdXIgZGF0YSBoYXMgZGlmZmVyZW50IHNjYWxlcyBvbmUgdmFyaWFibGUgY291bGQgb3ZlciB0YWtlIHRoZSBvdGhlcnMgY2F1c2luZyBvdXIgbW9kZWwgdG8gbm90IHV0aWxpemUgYWxsIHRoZSByZWxldmFudCBpbmZvcm1hdGlvbi4gVGhpcyBsZWFkcyB0byBjbHVzdGVycyB0aGF0IG1heSBub3QgcmVwcmVzZW50IGFjdHVhbCBjbHVzdGVycyBhbmQgd2lsbCBvbmx5IGNyZWF0ZSBjbHVzdGVycyBiYXNlZCBvbiB0aGUgaGlnaGVzdCBzY2FsZWQgdmFyaWFibGUuDQpUaGUgbnVtYmVyIG9mIGNsdXN0ZXJzIHNlbGVjdGVkIHdpbGwgYWxzbyBlZmZlY3QgdGhlIG91dGNvbWUsIGFjY3VyYWN5LCBhbmQgbWVhbmluZ2Z1bG5lc3Mgb2YgdGhlIHJlc3VsdHMuIElmIGEgc21hbGwgdmFsdWUgb2YgY2x1c3RlcnMgKmsqIGlzIHVzZWQgdGhlcmUgbWF5IG5vdCBiZSBlbm91Z2ggZ3JvdXBzIHRvIHNvcnQgdGhlIG9ic2VydmF0aW9ucyBpbiBhIHByb3BlciB3YXksIHRoaXMgY2FuIGxlYWQgdG8gbG9zZSBvZiBpbXBvcnRhbnQgcGF0dGVybnMgYW5kIGNsdXN0ZXJzIHRoYXQgc2hvdWxkIGJlIHNlcGFyYXRlIHdpbGwgY2FuIGVuZCB1cCBiZWluZyBtZXJnZWQgdG8gZml0IHRoZSB2YWx1ZSBvZiAqayouIE9uIHRoZSBvdGhlciBoYW5kIGlmIHRvIGhpZ2ggb2YgYSB2YWx1ZSBvZiAqayogaXMgdXNlZCB0aGVyZSBtYXkgYmUgdG9vIG1hbnkgY2x1c3RlcnMgdG8gZ2l2ZSBhbnkgbWVhbmluZyBmdWxsaW5nIGludGVycHJldGF0aW9ucy4gQSBsYXJnZSBudW1iZXIgZm9yICprKiBtYXkgYWxzbyByZXN1bHQgaW4gY2x1c3RlcnMgdGhhdCBzaG91bGQgbm90IGJlIHNwbGl0IHVwIGJlaW5nIGJyb2tlbiB1cCBpbnRvIG11bHRpcGxlIGNsdXN0ZXJzIHRvIHNhdGlzZnkgb3VyIHZhbHVlIGZvciAqayouIE9uZSBmaW5hbCBpc3N1ZSB3aXRoIGEgbGFyZ2UgdmFsdWUgb2YgKmsqIGNvdWxkIG1lYW4gY2x1c3RlcnMgbWF5IGJlIGZvcm1lZCB3aXRoIHRvbyBmZXcgb2JzZXJ2YXRpb25zIG1ha2luZyB0aGVtIG5vdCBhcyBtZWFuaW5nZnVsLiANCg0KDQojIFExLUIgQ29kZQ0KYGBge3J9DQojQ2hlY2sgdGhlIHN0cnVjdHVyZSBvZiB0aGUgZGF0YQ0Kc3RyKHdpbmVzKQ0KDQojc3VtbWFyeSBjaGVjaw0Kc3VtbWFyeSh3aW5lcykNCg0KI0NoZWNrIGZvciBtaXNzaW5nIHZhbHVlcw0KY29sTWVhbnMoaXMubmEod2luZXMpKQ0KDQojTm9ybWFsaXplIGRhdGENCndpbmVzLm5vcm0gPSBzY2FsZSh3aW5lcykNCg0KI2ZpbmRpbmcgYSBvcHRpbWFsIHZhbHVlIGZvciBrIHVzaW5nIEVsYm93IE1ldGhvZA0KZnZpel9uYmNsdXN0KHdpbmVzLm5vcm0sIGttZWFucywgbWV0aG9kID0gIndzcyIpDQoNCmBgYA0KDQojIFExLUIgRXhwbGluYXRpb25zDQoNCg0KDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg==</div>
 
 
 
