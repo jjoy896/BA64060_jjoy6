@@ -1,0 +1,28 @@
+{
+    "id": "BECB1379",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1730569332467.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "id": "777a1da4ff004a48b673732bfb43f077",
+        "name": "dbs.wine",
+        "title": "dbs.wine",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1939828317208,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1730569332467,
+    "read_only": false,
+    "read_only_alternatives": []
+}
