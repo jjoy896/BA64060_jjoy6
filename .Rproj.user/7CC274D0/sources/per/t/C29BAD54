@@ -15,10 +15,10 @@
         "totalObservations": "178",
         "displayedObservations": "178",
         "variables": "13",
-        "cacheKey": "DEDCDB68",
+        "cacheKey": "A6C9B748",
         "object": "wines.norm",
         "environment": "",
-        "contentUrl": "grid_resource/gridviewer.html?env=&obj=wines.norm&cache_key=DEDCDB68&max_display_columns=50",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=wines.norm&cache_key=A6C9B748&max_display_columns=50",
         "preview": "0",
         "source_window_id": "",
         "Source": "Source"
