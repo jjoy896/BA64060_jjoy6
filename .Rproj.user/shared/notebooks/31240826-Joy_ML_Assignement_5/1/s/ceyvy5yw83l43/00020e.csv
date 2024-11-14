@@ -1,3 +1,0 @@
-"0",""
-"0","#finding optimal value for k using Silhouette"
-"0","fviz_nbclust(wines.norm, kmeans, method = ""silhouette"")"

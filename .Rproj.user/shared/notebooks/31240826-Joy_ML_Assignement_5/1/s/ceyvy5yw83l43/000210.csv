@@ -1,6 +1,0 @@
-"0",""
-"0","#Performing K means with a k value of 3 based on the elbow point and the peak Silhouette"
-"0","k3 = kmeans(wines.norm, centers = 3, nstart = 25)"
-"0",""
-"0","#Plot of clusters"
-"0","fviz_cluster(k3, data = wines.norm)"

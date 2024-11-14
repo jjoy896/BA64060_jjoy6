@@ -1,1 +1,0 @@
-"0","axis(1, at = c(1:13), xpd = TRUE, labels = c(""Alc"",""Malic"",""Ash"",""Alca_Ash"",""Mag"",""T_Phenols"",""Flavanoids"",""NonFlav"", ""Proanth"", ""Color"", ""Hue"", ""OD280"", ""Proline""), cex.axis = 0.4)"

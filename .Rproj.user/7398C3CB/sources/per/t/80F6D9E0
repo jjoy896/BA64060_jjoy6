@@ -3,7 +3,7 @@
     "path": "~/GitHub/BA64060_jjoy6/ML_Assignmnet_5/Joy_ML_Assignement_5.Rmd",
     "project_path": "ML_Assignmnet_5/Joy_ML_Assignement_5.Rmd",
     "type": "r_markdown",
-    "hash": "348879734",
+    "hash": "1518468304",
     "contents": "",
     "dirty": false,
     "created": 1730474484042.0,
@@ -13,15 +13,15 @@
         "chunk_output_type": "inline",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "37,48",
-        "scrollLine": "20"
+        "cursorPosition": "31,0",
+        "scrollLine": "26"
     },
     "folds": "",
-    "lastKnownWriteTime": 1730479504,
+    "lastKnownWriteTime": 1730823026,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1730479504210,
+    "last_content_update": 1730823026,
     "read_only": false,
     "read_only_alternatives": []
 }

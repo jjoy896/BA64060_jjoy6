@@ -1,0 +1,78 @@
+---
+title: "Assignment 6"
+output: html_notebook
+author: "Jacob Joy"
+---
+
+```{r}
+library(ggplot2)
+library(cluster)
+library(dplyr)
+
+wines = read.csv("C:\\Wine-clustering-HC.csv")
+
+```
+
+# Q1-A Code
+```{r}
+#checking structure of data
+str(wines)
+
+#summary check
+summary(wines)
+
+#Check for missing values
+colMeans(is.na(wines))
+
+
+#Removing categorical variables
+wines_n = wines %>% select(-Alcohol_Level, -Ash_Content, -Color_Intensity_Group)
+
+#Normalize data
+wines_n.norm = scale(wines_n)
+
+#performing agnes using each different methods
+agnes_single = agnes(wines_n.norm, method = "single")
+agnes_complete = agnes(wines_n.norm, method = "complete")
+agnes_average = agnes(wines_n.norm, method = "average")
+agnes_ward = agnes(wines_n.norm, method = "ward")
+
+#Printing the AC of each method to determine the best one to select for graphing and using
+print(agnes_single$ac)
+print(agnes_complete$ac)
+print(agnes_average$ac)
+print(agnes_ward$ac)
+
+#Dendogram of Agnes that used the Ward method
+pltree(agnes_ward, cex = 0.6, hang = -1, main = "Dendrogram of Agnes")
+rect.hclust(agnes_ward, k = 3, border = 1:3)
+
+#Using DIANA
+diana.hc = diana(wines_n.norm)
+
+#Prinitng DIANAs DC
+print(diana.hc$dc)
+
+#Dendogram of Diana
+pltree(diana.hc, cex = 0.6, hang = -1, main = "Dendogram of Diana")
+rect.hclust(diana.hc, k = 3, border = 1:3)
+```
+# Q1-B Code
+```{r}
+print(paste("The highest AC comes from using Ward and is:", agnes_ward$ac))
+print(paste("The DC is:", diana.hc$dc))
+```
+# Q1-B Explination
+Based on the coefficients using Agnes with the Ward method produces the highest value indicating a stronger clustering structure.
+
+# Q2-A Code
+```{r}
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
