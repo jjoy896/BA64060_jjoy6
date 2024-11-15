@@ -67,7 +67,19 @@ Based on the coefficients using Agnes with the Ward method produces the highest 
 
 # Q2-A Code
 ```{r}
+#Median value of each categorical group
+median.Alcohol_Level = wines %>% group_by(Alcohol_Level) %>% summarise(Median_Alcohol = median(Alcohol, na.rm = TRUE))
+median.Ash_Content = wines %>% group_by(Ash_Content) %>% summarise(Median_Ash = median(Ash, na.rm = TRUE))
+median.Color_Intensity_Group = wines %>% group_by(Color_Intensity_Group) %>% 
+                   summarise(Median_Color = median(Color_Intensity, na.rm = TRUE))
 
+print(median.Alcohol_Level)
+print(median.Ash_Content)
+print(median.Color_Intensity_Group)
+```
+# Q2-B Code
+```{r}
+#ggplot(median.Alcohol_Level, )
 ```
 
 
