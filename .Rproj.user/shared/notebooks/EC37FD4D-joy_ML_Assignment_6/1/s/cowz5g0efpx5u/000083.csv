@@ -1,0 +1,5 @@
+"0",""
+"0","Color.plot = ggplot(median.Color_Intensity_Group, aes(x = Median_Color, y = reorder(Color_Intensity_Group, +Median_Color), fill = reorder(Color_Intensity_Group, +Median_Color) )) + geom_bar(stat = ""identity"", width = 0.5) + labs(title = ""Median of Color Intesity Level by Group"", x = ""Median Value of Color Intesity by Group"", y = ""Groups"") + theme(legend.position=""none"") + scale_x_continuous(breaks=seq(0, 8, 1)) + scale_y_discrete(labels = c(""Light"" = ""Light Below 4"", ""Moderate"" = ""Moderate between 4 - 6"", ""Dark"" = ""Dark above 6"")) + coord_flip()"
+"0",""
+"0","print(Color.plot)"
+"0",""

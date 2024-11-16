@@ -1,3 +1,3 @@
-"0","Alcohol.plot = ggplot(median.Alcohol_Level, aes(x = Median_Alcohol, y = reorder(Alcohol_Level, +Median_Alcohol), fill = reorder(Alcohol_Level, +Median_Alcohol) )) + geom_bar(stat = ""identity"", width = 0.5) + coord_flip() + theme(legend.position=""none"")"
+"0","Alcohol.plot = ggplot(median.Alcohol_Level, aes(x = Median_Alcohol, y = reorder(Alcohol_Level, +Median_Alcohol), fill = reorder(Alcohol_Level, +Median_Alcohol) )) + geom_bar(stat = ""identity"", width = 0.5) + labs(title = ""Median of Alcohol Level by Groups"", x = ""Median Value of Alcohol Content Percent by Group"", y = ""Groups"") + theme(legend.position=""none"") + scale_x_continuous(breaks=seq(0, 15, 1)) + scale_y_discrete(labels = c(""Low"" = ""Low Below 12.5%"", ""Medium"" = ""Medium between 12.5% - 13.5%"", ""High"" = ""High Above 13.5%"")) + coord_flip()"
 "0",""
-"0","Alcohol.plot"
+"0","print(Alcohol.plot)"

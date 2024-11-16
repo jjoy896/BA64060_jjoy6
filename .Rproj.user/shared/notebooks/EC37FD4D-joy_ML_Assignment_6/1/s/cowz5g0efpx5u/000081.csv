@@ -1,4 +1,4 @@
 "0",""
-"0","Ash.plot = ggplot(median.Ash_Content, aes(x = Median_Ash, y = factor(Ash_Content), fill = factor(Ash_Content))) + geom_bar(stat = ""identity"", width = 0.5) + coord_flip()"
+"0","Ash.plot = ggplot(median.Ash_Content, aes(x = Median_Ash, y = reorder(Ash_Content, +Median_Ash), fill = reorder(Ash_Content, +Median_Ash) )) + geom_bar(stat = ""identity"", width = 0.5) + labs(title = ""Median of Ash Content by Group"", x = ""Median Value of Ash Content by Group"", y = ""Groups"") + theme(legend.position=""none"") + scale_x_continuous(breaks=seq(0, 3, 0.5)) + scale_y_discrete(labels = c(""Low"" = ""Low below 2.3"", ""Moderate"" = ""Moderate between 2.3 - 2.6"", ""High"" = ""High Above 2.6"")) + coord_flip()"
 "0",""
-"0","Ash.plot"
+"0","print(Ash.plot)"
