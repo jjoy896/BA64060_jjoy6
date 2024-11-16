@@ -1,0 +1,4 @@
+"0",""
+"0","Ash.plot = ggplot(median.Ash_Content, aes(x = Median_Ash, y = factor(Ash_Content), fill = factor(Ash_Content))) + geom_bar(stat = ""identity"", width = 0.5) + coord_flip()"
+"0",""
+"0","Ash.plot"

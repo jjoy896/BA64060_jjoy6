@@ -1,6 +1,0 @@
-"0","#Median value of each categorical group"
-"0","median.Alcohol_Level = wines %>% group_by(Alcohol_Level) %>% summarise(Median_Alcohol = median(Alcohol, na.rm = TRUE))"
-"0","median.Ash_Content = wines %>% group_by(Ash_Content) %>% summarise(Median_Ash = median(Ash, na.rm = TRUE))"
-"0","median.Color_Intensity_Group = wines %>% group_by(Color_Intensity_Group) %>% summarise(Median_Color = median(Color_Intensity, na.rm = TRUE))"
-"0",""
-"0","print(median.Alcohol_Level)"
