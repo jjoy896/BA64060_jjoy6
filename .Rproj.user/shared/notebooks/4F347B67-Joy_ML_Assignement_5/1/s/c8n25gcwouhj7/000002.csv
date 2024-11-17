@@ -1,0 +1,5 @@
+"0","```r
+#determining eps
+dbscan::kNNdistplot(wines.norm, k = 3)
+abline(h = 2.8, lty = 2)
+```"

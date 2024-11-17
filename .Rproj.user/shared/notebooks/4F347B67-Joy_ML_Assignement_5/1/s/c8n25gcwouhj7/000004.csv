@@ -1,0 +1,16 @@
+"0","```r
+
+dbs.wine = fpc::dbscan(wines.norm, eps = 2.8, MinPts = 3)
+print(dbs.wine)
+```"
+"1","dbscan Pts=178 MinPts=3 eps=2.8
+        0   1
+border 15   5
+seed    0 158
+total  15 163
+"
+"0","```r
+fviz_cluster(dbs.wine, wines.norm, stand = FALSE, frame = FALSE, geom = \"point\")
+```"
+"1","Warning: argument frame is deprecated; please use ellipse instead.
+"

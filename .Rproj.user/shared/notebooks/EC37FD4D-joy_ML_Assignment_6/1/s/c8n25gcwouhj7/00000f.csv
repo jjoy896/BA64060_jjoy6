@@ -1,3 +1,4 @@
+"0","#Comparing AC and DC"
 "0","print(paste(""The highest AC comes from using Ward and is:"", agnes_ward$ac))"
 "1","[1]"
 "1"," ""The highest AC comes from using Ward and is: 0.941917204381566"""

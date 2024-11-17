@@ -1,0 +1,27 @@
+"0","```r
+
+#Centers
+k3$centers
+```"
+"1","     Alcohol Malic_Acid        Ash Ash_Alcanity   Magnesium Total_Phenols  Flavanoids Nonflavanoid_Phenols Proanthocyanins Color_Intensity        Hue
+1  0.1644436  0.8690954  0.1863726    0.5228924 -0.07526047   -0.97657548 -1.21182921           0.72402116     -0.77751312       0.9388902 -1.1615122
+2  0.8328826 -0.3029551  0.3636801   -0.6084749  0.57596208    0.88274724  0.97506900          -0.56050853      0.57865427       0.1705823  0.4726504
+3 -0.9234669 -0.3929331 -0.4931257    0.1701220 -0.49032869   -0.07576891  0.02075402          -0.03343924      0.05810161      -0.8993770  0.4605046
+       OD280    Proline
+1 -1.2887761 -0.4059428
+2  0.7770551  1.1220202
+3  0.2700025 -0.7517257
+"
+"0","```r
+mincenter = min(k3$centers)
+maxcenter = max(k3$centers)
+plot(c(0), xaxt = 'n', ylab = \"\", type =\"l\", ylim = c(mincenter, maxcenter), xlim = c(0, 13))
+axis(1, at = c(1:13), xpd = TRUE, labels = c(\"Alc\",\"Malic\",\"Ash\",\"Alca_Ash\",\"Mag\",\"T_Phenols\",\"Flavanoids\",\"NonFlav\", \"Proanth\", \"Color\", \"Hue\", \"OD280\", \"Proline\"), cex.axis = 0.4)
+```"
+"0","```r
+
+for(i in c(1:3))
+  lines(k3$centers[i,], lty = i, lwd = 2)
+
+text(x = 0.5, y = k3$centers[, 1], labels = paste(\"Cluster\", c(1:3)))
+```"
