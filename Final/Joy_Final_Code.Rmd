@@ -1,0 +1,57 @@
+---
+title: "Final Exam R Notebook"
+author: "Jacob Joy"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(corrplot)
+library(factoextra)
+
+
+
+#Laptop Data import
+fuelDF = read.csv("C:\\EIA923.csv")
+```
+```{r}
+set.seed(7165)
+str(fuelDF)
+
+fuelDF_CH = fuelDF %>% select(-plant_id_eia, -plant_id_eia_label)
+
+fuelDF_CH.num = fuelDF_CH %>% select(-fuel_type_code_pudl)
+
+fuelDF_CH.norm = scale(fuelDF_CH.num)
+
+summary(fuelDF_CH)
+
+#gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas') 
+
+colMeans(is.na(fuelDF_CH))
+
+fuelDF_CH$fuel_type_code_pudl = as.factor(fuelDF_CH$fuel_type_code_pudl)
+
+boxplot(fuelDF_CH$fuel_received_units)
+
+dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)
+dummy_matrix = predict(dummy_fuel, fuelDF_CH)
+fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)
+fuelDF.clean = cbind(fuelDF_CH.num, fuelDF_CH.dummy)
+
+cor_matrix = data.frame(cor(fuelDF_CH.norm))
+
+```
+# K-Means Clustering
+```{r}
+clusters = kmeans(fuelDF.clean, centers = 3)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

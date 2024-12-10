@@ -1,0 +1,7 @@
+"0",""
+"0","dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)"
+"0","dummy_matrix = predict(dummy_fuel, fuelDF_CH)"
+"0","fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)"
+"0","fuelDF.clean = cbind(fuelDF_CH.num, fuelDF_CH.dummy)"
+"0",""
+"0","cor_matrix = data.frame(cor(fuelDF_CH.norm))"

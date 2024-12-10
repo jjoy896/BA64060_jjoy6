@@ -1,0 +1,8 @@
+"0","library(dplyr)"
+"0","library(ggplot2)"
+"0","library(caret)"
+"0","library(corrplot)"
+"0",""
+"0",""
+"0","#Laptop Data import"
+"0","fuelDF = read.csv(""C:\\EIA923.csv"")"

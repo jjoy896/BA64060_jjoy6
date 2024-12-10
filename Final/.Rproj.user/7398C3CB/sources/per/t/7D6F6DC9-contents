@@ -1,0 +1,13 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Looking at the features and what they mean:
+plant_id_eia = unique identifier
+plant_id_eia_label = label for plant
+fuel recieved units = int but in difering units
+
+Clustering Questions
+
+finding clusters of 

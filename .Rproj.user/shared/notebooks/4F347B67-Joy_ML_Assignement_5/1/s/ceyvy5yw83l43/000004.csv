@@ -1,5 +1,0 @@
-"0","```r
-
-#finding optimal value for k using Silhouette
-fviz_nbclust(wines.norm, kmeans, method = \"silhouette\")
-```"

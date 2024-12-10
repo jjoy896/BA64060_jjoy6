@@ -1,2 +1,0 @@
-"0","agnes.grp = cutree(agnes_ward, k = 3)"
-"0","fviz_cluster(list(data = wines_n.norm, cluster = agnes.grp))"
