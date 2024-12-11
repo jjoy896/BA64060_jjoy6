@@ -65,6 +65,28 @@ fviz_nbclust(fuelDF.clean, kmeans, method = "silhouette")
 kclusters = kmeans(fuelDF.clean, centers = 3)
 
 fviz_cluster(kclusters, data = fuelDF.clean)
+
+#Centers
+kclusters$centers
+
+#Setting up and plotting centroids
+mincenter = min(kclusters$centers)
+maxcenter = max(kclusters$centers)
+plot(c(0), xaxt = 'n', ylab = "", type ="l", ylim = c(mincenter, maxcenter), xlim = c(0, 7))
+axis(1, at = c(1:7), xpd = TRUE, labels = c("Coal","Gas","Oil","MMBTU", "Sulfur", "Ash", "Cost"), cex.axis = 1)
+
+#for(i in c(1:3))
+lines(kclusters$centers[1,], lty = 1, lwd = 2, col = "red")
+lines(kclusters$centers[2,], lty = 2, lwd = 2, col = "green")
+lines(kclusters$centers[3,], lty = 3, lwd = 2, col = "blue")
+
+legend(x = "topleft", box.col = "brown", 
+       bg ="yellow", box.lwd = 2 , title="Clusters",  
+       legend=c("Cluster 1", "Cluster 2", "Cluster 3"),  
+       fill = c("red","green", "blue")) 
+
+#text(x = 0.5, y = kclusters$centers[, 1], labels = paste("C", c(1:3)))
+
 ```
 
 # DBSCAN
