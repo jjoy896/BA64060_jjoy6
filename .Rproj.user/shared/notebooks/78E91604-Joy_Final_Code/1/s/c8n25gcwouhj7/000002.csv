@@ -1,6 +1,0 @@
-"0","```r
-clusters = kmeans(fuelDF.clean, centers = 3, algorithm = \"jaccard\")
-```"
-"1","Error in match.arg(algorithm) : 
-  'arg' should be one of “Hartigan-Wong”, “Lloyd”, “Forgy”, “MacQueen”
-"

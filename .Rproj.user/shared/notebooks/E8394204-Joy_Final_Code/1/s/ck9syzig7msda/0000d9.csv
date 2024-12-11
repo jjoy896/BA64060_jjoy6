@@ -1,4 +1,0 @@
-"0",""
-"0","kclusters = kmeans(fuelDF.clean, centers = 3)"
-"0",""
-"0","fviz_cluster(kclusters, data = fuelDF.clean)"
