@@ -1,0 +1,53 @@
+"0","```r
+set.seed(7165)
+str(fuelDF)
+```"
+"1","'data.frame':	756 obs. of  8 variables:
+ $ plant_id_eia       : int  113 1230 492 469 470 477 465 1233 493 493 ...
+ $ plant_id_eia_label : chr  \"Cholla\" \"Cimarron River\" \"South Plant\" \"Cherokee\" ...
+ $ fuel_type_code_pudl: chr  \"gas\" \"gas\" \"gas\" \"gas\" ...
+ $ fuel_received_units: int  77 21256 1804 149785 23298 6355 2422 430377 2289 1668 ...
+ $ fuel_mmbtu_per_unit: num  0.857 0.971 0.983 0.989 0.989 0.989 0.992 0.996 0.999 0.999 ...
+ $ sulfur_content_pct : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ ash_content_pct    : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ fuel_cost_per_mmbtu: num  7.29 5.97 15.34 6.8 6.8 ...
+"
+"0","```r
+fuelDF_CH = fuelDF %>% select(-plant_id_eia, -plant_id_eia_label)
+
+fuelDF_CH.num = fuelDF_CH %>% select(-fuel_type_code_pudl)
+
+fuelDF_CH.norm = scale(fuelDF_CH.num)
+
+summary(fuelDF_CH)
+```"
+"1"," fuel_type_code_pudl fuel_received_units fuel_mmbtu_per_unit sulfur_content_pct ash_content_pct 
+ Length:756          Min.   :      1     Min.   : 0.857      Min.   :0.0000     Min.   : 0.000  
+ Class :character    1st Qu.:   1300     1st Qu.: 1.028      1st Qu.:0.0000     1st Qu.: 0.000  
+ Mode  :character    Median :  12570     Median :17.141      Median :0.3200     Median : 5.000  
+                     Mean   :  89258     Mean   :13.349      Mean   :0.7314     Mean   : 4.995  
+                     3rd Qu.:  42025     3rd Qu.:23.870      3rd Qu.:0.9400     3rd Qu.: 9.600  
+                     Max.   :4823176     Max.   :29.400      Max.   :6.6100     Max.   :20.900  
+ fuel_cost_per_mmbtu
+ Min.   : 0.343     
+ 1st Qu.: 1.948     
+ Median : 3.080     
+ Mean   : 5.786     
+ 3rd Qu.: 8.401     
+ Max.   :29.510     
+"
+"0","```r
+#gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas') 
+
+colMeans(is.na(fuelDF_CH))
+```"
+"1","fuel_type_code_pudl fuel_received_units fuel_mmbtu_per_unit  sulfur_content_pct     ash_content_pct 
+                  0                   0                   0                   0                   0 
+fuel_cost_per_mmbtu 
+                  0 
+"
+"0","```r
+fuelDF_CH$fuel_type_code_pudl = as.factor(fuelDF_CH$fuel_type_code_pudl)
+
+boxplot(fuelDF_CH$fuel_received_units)
+```"

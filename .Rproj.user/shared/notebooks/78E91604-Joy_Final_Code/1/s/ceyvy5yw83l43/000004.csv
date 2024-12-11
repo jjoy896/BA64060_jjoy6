@@ -1,0 +1,9 @@
+"0","```r
+
+dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)
+dummy_matrix = predict(dummy_fuel, fuelDF_CH)
+fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)
+fuelDF.clean = cbind(fuelDF_CH.num, fuelDF_CH.dummy)
+
+cor_matrix = data.frame(cor(fuelDF_CH.norm))
+```"
