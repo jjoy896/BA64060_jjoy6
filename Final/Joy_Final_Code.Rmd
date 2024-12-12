@@ -3,7 +3,7 @@ title: "Final Exam R Notebook"
 author: "Jacob Joy"
 output: html_notebook
 ---
-
+# Imports and libraries used
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -18,44 +18,53 @@ library(gmodels)
 library(naivebayes)
 
 #Laptop Data import
-fuelDF = read.csv("C:\\EIA923.csv")
+#fuelDF = read.csv("C:\\EIA923.csv")
 
 #Desktop Data Import
-#fuelDF = read.csv("F:\\EIA923.csv")
+fuelDF = read.csv("F:\\EIA923.csv")
 ```
 
+# Data Cleaning and Preprocessing
 ```{r}
+#seed set according to last 4 of student number
 set.seed(7165)
+
+#Look at structure of data
 str(fuelDF)
 
+#Removing plant id and label
 fuelDF_CH = fuelDF %>% select(-plant_id_eia, -plant_id_eia_label)
 
+#Quick look at data summary
 summary(fuelDF_CH)
+
+#This code was used to look at the fuel_received_units for each type of energy source
+#Discussed in report not used in final code
 
 #gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas')
 #oilDF = fuelDF %>% filter(fuel_type_code_pudl == 'oil')
 #coalDF = fuelDF %>% filter(fuel_type_code_pudl == 'coal')
-
 #boxplot(gasDF$fuel_received_units)
-
 #summary(gasDF)
 #summary(oilDF)
 #summary(coalDF)
 
+#Checking for missing values
 colMeans(is.na(fuelDF_CH))
 
-#logDF = fuelDF %>% select(fuel_received_units) %>% mutate(logtrans = log(fuel_received_units + 1)) %>% scale()
-
-
-
+#Based on str needed to change type char to factor
 fuelDF_CH$fuel_type_code_pudl = as.factor(fuelDF_CH$fuel_type_code_pudl)
+
+#Creation of dummy variables for fuel type which is a categorical variable
 dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)
 dummy_matrix = predict(dummy_fuel, fuelDF_CH)
 fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)
 
+#removing the categorical variable fuel_type_code_pudl, redundant with dummy Vars created
+#normalized the data frame
 fuelDF.clean = fuelDF_CH.dummy %>% select(-fuel_type_code_pudl) %>% scale()
 
-#fuelDF.clean = cbind(fuelDF.clean, logDF)
+
 cor_matrix = data.frame(cor(fuelDF.clean))
 cor_matrix
 
@@ -63,6 +72,8 @@ cor_matrix
 fuelDF.clean = as.data.frame(fuelDF.clean)
 fuelDF.clean = fuelDF.clean %>% select(-fuel_received_units)
 ```
+
+
 # K-Means Clustering
 ```{r}
 fviz_nbclust(fuelDF.clean, kmeans, method = "wss")

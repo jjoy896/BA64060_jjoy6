@@ -3,13 +3,19 @@ title: "Final Exam R Notebook"
 author: "Jacob Joy"
 output: html_notebook
 ---
-
+# Imports and libraries used
 ```{r}
 library(dplyr)
 library(ggplot2)
 library(caret)
 library(corrplot)
 library(factoextra)
+library(dbscan)
+library(fpc)
+library(cluster)
+library(class)
+library(gmodels)
+library(naivebayes)
 
 #Laptop Data import
 #fuelDF = read.csv("C:\\EIA923.csv")
@@ -18,38 +24,47 @@ library(factoextra)
 fuelDF = read.csv("F:\\EIA923.csv")
 ```
 
+# Data Cleaning and Preprocessing
 ```{r}
+#seed set according to last 4 of student number
 set.seed(7165)
+
+#Look at structure of data
 str(fuelDF)
 
+#Removing plant id and label
 fuelDF_CH = fuelDF %>% select(-plant_id_eia, -plant_id_eia_label)
 
+#Quick look at data summary
 summary(fuelDF_CH)
+
+#This code was used to look at the fuel_received_units for each type of energy source
+#Discussed in report not used in final code
 
 #gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas')
 #oilDF = fuelDF %>% filter(fuel_type_code_pudl == 'oil')
 #coalDF = fuelDF %>% filter(fuel_type_code_pudl == 'coal')
-
 #boxplot(gasDF$fuel_received_units)
-
 #summary(gasDF)
 #summary(oilDF)
 #summary(coalDF)
 
+#Checking for missing values
 colMeans(is.na(fuelDF_CH))
 
-#logDF = fuelDF %>% select(fuel_received_units) %>% mutate(logtrans = log(fuel_received_units + 1)) %>% scale()
-
-
-
+#Based on str needed to change type char to factor
 fuelDF_CH$fuel_type_code_pudl = as.factor(fuelDF_CH$fuel_type_code_pudl)
+
+#Creation of dummy variables for fuel type which is a categorical variable
 dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)
 dummy_matrix = predict(dummy_fuel, fuelDF_CH)
 fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)
 
+#removing the categorical variable fuel_type_code_pudl, redundant with dummy Vars created
+#normalized the data frame
 fuelDF.clean = fuelDF_CH.dummy %>% select(-fuel_type_code_pudl) %>% scale()
 
-#fuelDF.clean = cbind(fuelDF.clean, logDF)
+
 cor_matrix = data.frame(cor(fuelDF.clean))
 cor_matrix
 
@@ -57,13 +72,17 @@ cor_matrix
 fuelDF.clean = as.data.frame(fuelDF.clean)
 fuelDF.clean = fuelDF.clean %>% select(-fuel_received_units)
 ```
+
+
 # K-Means Clustering
 ```{r}
 fviz_nbclust(fuelDF.clean, kmeans, method = "wss")
 fviz_nbclust(fuelDF.clean, kmeans, method = "silhouette")
 
 kclusters = kmeans(fuelDF.clean, centers = 3)
+#kclusters = kcca(fuelDF.clean, k=3, kccaFamily("jaccard"))
 
+#ja = predict(kclusters)
 fviz_cluster(kclusters, data = fuelDF.clean)
 
 #Centers
@@ -91,25 +110,133 @@ legend(x = "topleft", box.col = "brown",
 
 # DBSCAN
 ```{r}
+#determining eps
+dbscan::kNNdistplot(fuelDF.clean, k = 5)
+abline(h = 0.7, lty = 2)
 
+dbs = fpc::dbscan(fuelDF.clean, eps = 0.7, MinPts = 5)
+print(dbs)
+
+fviz_cluster(dbs, fuelDF.clean, stand = FALSE, frame = FALSE, geom = "point")
 ```
 
 # Hierarchical Clustering
 
 ```{r}
+#performing agnes using each different methods
+agnes_single = agnes(fuelDF.clean, method = "single")
+agnes_complete = agnes(fuelDF.clean, method = "complete")
+agnes_average = agnes(fuelDF.clean, method = "average")
+agnes_ward = agnes(fuelDF.clean, method = "ward")
 
+#Printing the AC of each method to determine the best one to select for graphing and using
+print(agnes_single$ac)
+print(agnes_complete$ac)
+print(agnes_average$ac)
+print(agnes_ward$ac)
+
+#Dendogram of Agnes that used the Ward method
+pltree(agnes_ward, cex = 0.6, hang = -1, main = "Dendrogram of Agnes")
+rect.hclust(agnes_ward, k = 3, border = 1:3)
+
+#Using DIANA
+diana.hc = diana(fuelDF.clean)
+
+#Prinitng DIANAs DC
+print(diana.hc$dc)
+
+#Dendogram of Diana
+pltree(diana.hc, cex = 0.6, hang = -1, main = "Dendogram of Diana")
+rect.hclust(diana.hc, k = 3, border = 1:3)
 ```
 
 # Classification
 
 # K-NN
 ```{r}
+#Partitioned the data in half and stratified based on the target variable
+train_index = createDataPartition(fuelDF_CH$fuel_type_code_pudl, p = 0.7, list = FALSE)
+
+#Half of the data will be used for training
+trainDF = fuelDF_CH[train_index,]
+
+#The other half will be further partitioned into validation and testing
+tempdf = fuelDF_CH[-train_index,]
+
+#Partitioned the remaining data into validation index of 30% stratified based on the target variable to stay consistent
+validation_index = createDataPartition(tempdf$fuel_type_code_pudl, p = 0.2, list = FALSE)
+
+#Created the validation data frame
+validationDF = tempdf[validation_index,]
+
+#Created the testDF using the left over data
+testDF = tempdf[-validation_index,]
+
+#Removed the temp data frame 
+rm(tempdf)
+
+#created normalized values using z-score normalization, removing STATUS from the data first.
+norm_values = preProcess(trainDF[,3:6], method= c("center","scale"))
+
+#Based on the normalized values from the training set testing, validation, and training normalized data frames are created.
+#Making sure STATUS is removed from each before creation.
+testDF_norm = predict(norm_values, testDF[,(3:6)])
+validationDF_norm = predict(norm_values, validationDF[,3:6])
+trainDF_norm = predict(norm_values, trainDF[,3:6])
+
+train_labels = trainDF[,1]
+test_labels = testDF[,1]
+validation_labels = validationDF[,1]
+
+#Created a data frame that contains values of k from 1 - 15
+accuracyDF = data.frame(k = seq(1,15,1), overallAccuracy = rep(0,15))
+
+#Using a for loop try each value of k and add to the data frame the accuracy of correct predictions
+#We use the training and validation sets for this purpose so we can keep our test data unseen
+for(i in 1:15) {
+  
+  knn_pred = class::knn(train = trainDF_norm, test = validationDF_norm, cl = trainDF$fuel_type_code_pudl, k = i)
+  
+  accuracyDF[i, 2] = confusionMatrix(knn_pred, as.factor(validationDF$fuel_type_code_pudl))$overall[1]
+  
+}
+# display the value of k and the overall accuracy
+accuracyDF[which(accuracyDF[,2] == max(accuracyDF[,2])),]
+
+trainDF_norm_join = rbind(trainDF_norm, validationDF_norm)
+train_labels_join = c(train_labels, validation_labels )
+
+knn_prediction = knn(trainDF_norm_join, testDF_norm, cl=train_labels_join, k = 1)
+
+confusionMatrix(knn_prediction, test_labels)
+
+CrossTable(test_labels, knn_prediction, prop.chisq = FALSE)
+
 
 ```
 
 # Naive Bayes
 ```{r}
+#Creation of the Naive Bayes Classifier based on BP and Chest Pain
+nb_model = naive_bayes(fuel_type_code_pudl ~fuel_mmbtu_per_unit + sulfur_content_pct + ash_content_pct + fuel_cost_per_mmbtu, data = trainDF, laplace = 0)
 
+#Predictions made using the Classifier
+train_pred = predict(nb_model, validationDF)
+
+#confusion matrix
+validationDF$fuel_type_code_pudl = as.factor(validationDF$fuel_type_code_pudl)
+confusionMatrix(train_pred, validationDF$fuel_type_code_pudl)
+
+trainDF_All = rbind(trainDF, validationDF)
+
+nb_model_all = naive_bayes(fuel_type_code_pudl ~fuel_mmbtu_per_unit + sulfur_content_pct + ash_content_pct + fuel_cost_per_mmbtu, data = trainDF_All, laplace = 0)
+
+#Predictions made using the Classifier
+train_pred_All = predict(nb_model_all, testDF)
+
+#confusion matrix
+testDF$fuel_type_code_pudl = as.factor(testDF$fuel_type_code_pudl)
+confusionMatrix(train_pred_All, testDF$fuel_type_code_pudl)
 ```
 
 

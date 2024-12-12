@@ -1,7 +1,37 @@
 ---
-title: "R Notebook"
+title: "Final Project Report"
+author: "Jacob Joy"
 output: html_notebook
 ---
+
+## Executive Summary
+
+## Introduction
+
+
+## Clustering Analysis and Discussion
+
+## Classification Analysis and Discussion
+
+## Conclusion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Looking at the features and what they mean:
 plant_id_eia = unique identifier

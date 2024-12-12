@@ -3,7 +3,7 @@
     "path": "F:/Github/BA64060_jjoy6/Final/Joy_Final_Report.Rmd",
     "project_path": "Final/Joy_Final_Report.Rmd",
     "type": "r_markdown",
-    "hash": "3847203149",
+    "hash": "2872896877",
     "contents": "",
     "dirty": false,
     "created": 1733874170331.0,
@@ -12,14 +12,16 @@
     "properties": {
         "chunk_output_type": "inline",
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "9,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1733874170,
+    "lastKnownWriteTime": 1734004271,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1733874170,
+    "last_content_update": 1734004271565,
     "read_only": false,
     "read_only_alternatives": []
 }
