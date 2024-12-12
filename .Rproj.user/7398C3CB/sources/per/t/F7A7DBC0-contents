@@ -1,9 +1,11 @@
 ---
 title: "Final Exam R Notebook"
 author: "Jacob Joy"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
-
+# Imports and libraries used
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -16,6 +18,7 @@ library(cluster)
 library(class)
 library(gmodels)
 library(naivebayes)
+library(ggcorrplot)
 
 #Laptop Data import
 fuelDF = read.csv("C:\\EIA923.csv")
@@ -24,47 +27,69 @@ fuelDF = read.csv("C:\\EIA923.csv")
 #fuelDF = read.csv("F:\\EIA923.csv")
 ```
 
+# Data Cleaning and Preprocessing
 ```{r}
+#seed set according to last 4 of student number
 set.seed(7165)
+
+#Look at structure of data
 str(fuelDF)
 
+#Removing plant id and label
 fuelDF_CH = fuelDF %>% select(-plant_id_eia, -plant_id_eia_label)
 
+#Quick look at data summary
 summary(fuelDF_CH)
 
-#gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas')
-#oilDF = fuelDF %>% filter(fuel_type_code_pudl == 'oil')
-#coalDF = fuelDF %>% filter(fuel_type_code_pudl == 'coal')
-
-#boxplot(gasDF$fuel_received_units)
-
-#summary(gasDF)
-#summary(oilDF)
-#summary(coalDF)
-
+#Checking for missing values
 colMeans(is.na(fuelDF_CH))
 
-#logDF = fuelDF %>% select(fuel_received_units) %>% mutate(logtrans = log(fuel_received_units + 1)) %>% scale()
-
-
-
+#Based on str needed to change type char to factor
 fuelDF_CH$fuel_type_code_pudl = as.factor(fuelDF_CH$fuel_type_code_pudl)
+
+#Creation of dummy variables for fuel type which is a categorical variable
 dummy_fuel = dummyVars(~fuel_type_code_pudl, data = fuelDF_CH)
 dummy_matrix = predict(dummy_fuel, fuelDF_CH)
 fuelDF_CH.dummy = cbind(dummy_matrix, fuelDF_CH)
 
+#looking at each variable and potential outliers 
+boxplot(fuelDF$fuel_received_units, main = "Fuel Recieved Units")
+boxplot(fuelDF$sulfur_content_pct)
+boxplot(fuelDF$fuel_mmbtu_per_unit)
+boxplot(fuelDF$ash_content_pct)
+boxplot(fuelDF$fuel_cost_per_mmbtu)
+
+#additional look at sulfur content values
+hist(fuelDF$sulfur_content_pct)
+
+#This code was used to look at the fuel_received_units for each type of energy source
+#Discussed in report not used in final code
+
+#gasDF = fuelDF %>% filter(fuel_type_code_pudl == 'gas')
+#oilDF = fuelDF %>% filter(fuel_type_code_pudl == 'oil')
+#coalDF = fuelDF %>% filter(fuel_type_code_pudl == 'coal')
+#boxplot(gasDF$fuel_received_units)
+#summary(gasDF)
+#summary(oilDF)
+#summary(coalDF)
+
+#removing the categorical variable fuel_type_code_pudl, redundant with dummy Vars created
+#normalized the data frame
 fuelDF.clean = fuelDF_CH.dummy %>% select(-fuel_type_code_pudl) %>% scale()
 
-#fuelDF.clean = cbind(fuelDF.clean, logDF)
+#Correlation matrix to determine features to use
 cor_matrix = data.frame(cor(fuelDF.clean))
-cor_matrix
+ggcorrplot(cor_matrix)
 
-
+#removal of fuel_received_units
 fuelDF.clean = as.data.frame(fuelDF.clean)
 fuelDF.clean = fuelDF.clean %>% select(-fuel_received_units)
 ```
+
+
 # K-Means Clustering
 ```{r}
+#determining a value for k
 fviz_nbclust(fuelDF.clean, kmeans, method = "wss")
 fviz_nbclust(fuelDF.clean, kmeans, method = "silhouette")
 
@@ -77,13 +102,18 @@ fviz_cluster(kclusters, data = fuelDF.clean)
 #Centers
 kclusters$centers
 
+#Size
+kclusters$size
+
+fuelDF %>% group_by(fuel_type_code_pudl) %>% summarize(count = n())
+
 #Setting up and plotting centroids
 mincenter = min(kclusters$centers)
 maxcenter = max(kclusters$centers)
 plot(c(0), xaxt = 'n', ylab = "", type ="l", ylim = c(mincenter, maxcenter), xlim = c(0, 7))
 axis(1, at = c(1:7), xpd = TRUE, labels = c("Coal","Gas","Oil","MMBTU", "Sulfur", "Ash", "Cost"), cex.axis = 1)
 
-#for(i in c(1:3))
+
 lines(kclusters$centers[1,], lty = 1, lwd = 2, col = "red")
 lines(kclusters$centers[2,], lty = 2, lwd = 2, col = "green")
 lines(kclusters$centers[3,], lty = 3, lwd = 2, col = "blue")
@@ -92,9 +122,6 @@ legend(x = "topleft", box.col = "brown",
        bg ="yellow", box.lwd = 2 , title="Clusters",  
        legend=c("Cluster 1", "Cluster 2", "Cluster 3"),  
        fill = c("red","green", "blue")) 
-
-#text(x = 0.5, y = kclusters$centers[, 1], labels = paste("C", c(1:3)))
-
 ```
 
 # DBSCAN
@@ -135,8 +162,12 @@ diana.hc = diana(fuelDF.clean)
 print(diana.hc$dc)
 
 #Dendogram of Diana
-pltree(diana.hc, cex = 0.6, hang = -1, main = "Dendogram of Diana")
-rect.hclust(diana.hc, k = 3, border = 1:3)
+#pltree(diana.hc, cex = 0.6, hang = -1, main = "Dendogram of Diana")
+#rect.hclust(diana.hc, k = 3, border = 1:3)
+
+#Plot of AGNES Clusters
+agnes.grp = cutree(agnes_ward, k = 3)
+fviz_cluster(list(data = fuelDF.clean, cluster = agnes.grp))
 ```
 
 # Classification
@@ -152,7 +183,7 @@ trainDF = fuelDF_CH[train_index,]
 #The other half will be further partitioned into validation and testing
 tempdf = fuelDF_CH[-train_index,]
 
-#Partitioned the remaining data into validation index of 30% stratified based on the target variable to stay consistent
+#Partitioned the remaining data into validation index of 20% stratified based on the target variable to stay consistent
 validation_index = createDataPartition(tempdf$fuel_type_code_pudl, p = 0.2, list = FALSE)
 
 #Created the validation data frame
@@ -164,11 +195,10 @@ testDF = tempdf[-validation_index,]
 #Removed the temp data frame 
 rm(tempdf)
 
-#created normalized values using z-score normalization, removing STATUS from the data first.
+#created normalized values using z-score normalization.
 norm_values = preProcess(trainDF[,3:6], method= c("center","scale"))
 
 #Based on the normalized values from the training set testing, validation, and training normalized data frames are created.
-#Making sure STATUS is removed from each before creation.
 testDF_norm = predict(norm_values, testDF[,(3:6)])
 validationDF_norm = predict(norm_values, validationDF[,3:6])
 trainDF_norm = predict(norm_values, trainDF[,3:6])
@@ -199,14 +229,11 @@ knn_prediction = knn(trainDF_norm_join, testDF_norm, cl=train_labels_join, k = 1
 
 confusionMatrix(knn_prediction, test_labels)
 
-CrossTable(test_labels, knn_prediction, prop.chisq = FALSE)
-
-
 ```
 
 # Naive Bayes
 ```{r}
-#Creation of the Naive Bayes Classifier based on BP and Chest Pain
+#Creation of the Naive Bayes Classifier
 nb_model = naive_bayes(fuel_type_code_pudl ~fuel_mmbtu_per_unit + sulfur_content_pct + ash_content_pct + fuel_cost_per_mmbtu, data = trainDF, laplace = 0)
 
 #Predictions made using the Classifier
@@ -227,11 +254,3 @@ train_pred_All = predict(nb_model_all, testDF)
 testDF$fuel_type_code_pudl = as.factor(testDF$fuel_type_code_pudl)
 confusionMatrix(train_pred_All, testDF$fuel_type_code_pudl)
 ```
-
-
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

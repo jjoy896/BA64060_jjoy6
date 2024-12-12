@@ -1,0 +1,5 @@
+"0",""
+"0","#Setting up and plotting centroids"
+"0","mincenter = min(kclusters$centers)"
+"0","maxcenter = max(kclusters$centers)"
+"0","plot(c(0), xaxt = 'n', ylab = """", type =""l"", ylim = c(mincenter, maxcenter), xlim = c(0, 7))"

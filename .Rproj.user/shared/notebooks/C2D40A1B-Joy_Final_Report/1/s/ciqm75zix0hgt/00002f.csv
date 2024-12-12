@@ -1,0 +1,5 @@
+"0",""
+"0","legend(x = ""topleft"", box.col = ""brown"", "
+"0","       bg =""yellow"", box.lwd = 2 , title=""Clusters"",  "
+"0","       legend=c(""Cluster 1"", ""Cluster 2"", ""Cluster 3""),  "
+"0","       fill = c(""red"",""green"", ""blue"")) "
