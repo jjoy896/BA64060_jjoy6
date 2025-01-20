@@ -1,2 +1,0 @@
-"0","#determining a value for k"
-"0","fviz_nbclust(fuelDF.clean, kmeans, method = ""wss"")"

@@ -1,2 +1,0 @@
-"0","#performing agnes using each different methods"
-"0","agnes_single = agnes(fuelDF.clean, method = ""single"")"

@@ -1,3 +1,0 @@
-"0",""
-"0","#additional look at sulfur content values"
-"0","hist(fuelDF$sulfur_content_pct)"

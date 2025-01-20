@@ -1,6 +1,0 @@
-"0",""
-"0","kclusters = kmeans(fuelDF.clean, centers = 3)"
-"0","#kclusters = kcca(fuelDF.clean, k=3, kccaFamily(""jaccard""))"
-"0",""
-"0","#ja = predict(kclusters)"
-"0","fviz_cluster(kclusters, data = fuelDF.clean)"
